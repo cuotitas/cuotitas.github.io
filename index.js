@@ -33,9 +33,11 @@ const evs=[
  ['HOOK','bank.qr.paid         ','200','ok',()=>`Bs ${fmt(100+Math.random()*900,2)}`],
  ['JOB ','cuotas.crear         ','3 cuotas','ok',()=>'d14 d28 d42'],
  ['WS  ','caja.orden.aprobada  ','enviado','ok',()=>''],
- ['JOB ','liquidacion.t+1      ','Bs '+fmt(48210),'ok',()=>'12 comercios'],
+ ['JOB ','liquidacion.dia7     ','Bs '+fmt(48210),'ok',()=>'12 comercios · 8%'],
  ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} nivel 1  `,'rechazado','wa',()=>'supera la línea'],
- ['JOB ','cuota.vencida        ','congelada','wa',()=>'aviso WhatsApp']];
+ ['JOB ','cuota.vencida        ','congelada','wa',()=>'L1 y L2 en pausa'],
+ ['JOB ','cuota.multa          ','Bs 50','wa',()=>'gracia vencida · al comercio'],
+ ['RISK',()=>`farmacia usr_${Math.random().toString(16).slice(2,5)} L1  `,'aprobado','ok',()=>`1 cuota d14 Bs ${fmt(20+Math.floor(Math.random()*180))}`]];
 let lines=log.innerHTML.split('\n').filter(l=>l&&!l.includes('caret'));
 let clock=10*3600+41*60+9;
 function tick(){clock+=1+Math.floor(Math.random()*3);const t=new Date(clock*1000).toISOString().slice(11,19);
@@ -49,14 +51,22 @@ if(!reduce)setInterval(tick,1300);
 function countUp(b){const n=+b.dataset.count,pre=b.dataset.pre||'',suf=b.dataset.suf||'';const t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-p,3);b.textContent=pre+fmt(Math.round(n*e))+suf;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 if(!reduce)document.querySelectorAll('[data-count]').forEach(countUp);
 
-/* simulator */
-const LV={1:[.50,500],2:[.45,1000],3:[.40,2000],4:[.30,4000],5:[.25,6000]};let lv=1;const pr=$('#precio');
-function sim(){const p=+pr.value,[ip,lin]=LV[lv],ini=Math.round(p*ip*100)/100,fin=Math.round((p-ini)*100)/100,cu=Math.round(fin/3*100)/100,com=Math.round(p*7)/100;
+/* simulator: two credit lines */
+const L2={1:[.50,500,3],2:[.45,1000,3],3:[.40,2000,4],4:[.30,4000,6],5:[.25,6000,6]};
+const L1={1:300,2:500,3:800,4:1200,5:1500};
+let lv=1,ln=2,po='m';const pr=$('#precio');
+function sim(){const p=+pr.value;let ip,lin,n,cr;
+  if(ln===1){ip=0;lin=L1[lv];n=1}else{[ip,lin,n]=L2[lv]}cr=po==='m'?.04:.08;
+  const ini=Math.round(p*ip*100)/100,fin=Math.round((p-ini)*100)/100,cu=Math.round(fin/n*100)/100,com=Math.round(p*cr*100)/100;
   $('#precioTxt').textContent=bs(p);$('#iniTxt').textContent=bs(ini);$('#cuTxt').textContent=bs(cu);$('#lineaTxt').textContent=bs(lin);$('#finTxt').textContent=bs(fin);$('#comTxt').textContent=bs(com);$('#netTxt').textContent=bs(Math.max(0,fin-com));
-  $('#bIni').style.flexGrow=(ip/((1-ip)/3)).toFixed(3);$('#bIni').textContent='Inicial '+Math.round(ip*100)+'%';
-  const st=$('#estado');if(fin>lin){st.className='status bad';st.lastElementChild.textContent='Rechazado: supera la línea de '+bs(lin)+'. Sube la inicial o elige un producto más barato.'}else{st.className='status ok';st.lastElementChild.textContent='Aprobado: dentro de la línea'}}
+  $('#comLab').textContent='Comisión al comercio ('+Math.round(cr*100)+'%)';$('#netLab').textContent='Cuotitas paga al comercio '+(po==='m'?'a fin de mes':'el día 7');
+  $('#cuLab').textContent=n===1?'Una cuota (día 14)':`${n} cuotas (d14 a d${n*14})`;
+  $('#split').innerHTML=(ip>0?`<div class="ini" style="flex-grow:${(ip/((1-ip)/n)).toFixed(3)}">Inicial ${Math.round(ip*100)}%</div>`:'')+Array.from({length:n},(_,i)=>`<div class="cu" style="flex-grow:1">${n===1?'1 cuota · día 14':i+1}</div>`).join('');
+  const st=$('#estado');if(fin>lin){st.className='status bad';st.lastElementChild.textContent='Rechazado: supera la Línea '+ln+' de '+bs(lin)+'. '+(ln===1?'Las compras grandes van por la Línea 2.':'Sube la inicial o elige un producto más barato.')}else{st.className='status ok';st.lastElementChild.textContent='Aprobado en la Línea '+ln+': dentro del límite'}}
 pr.addEventListener('input',sim);
-document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{lv=+b.dataset.l;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
+document.querySelectorAll('[data-l]').forEach(b=>b.addEventListener('click',()=>{lv=+b.dataset.l;document.querySelectorAll('[data-l]').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
+document.querySelectorAll('[data-ln]').forEach(b=>b.addEventListener('click',()=>{ln=+b.dataset.ln;document.querySelectorAll('[data-ln]').forEach(x=>x.setAttribute('aria-pressed',x===b));if(ln===1&&+pr.value>1500)pr.value=300;sim()}));
+document.querySelectorAll('[data-po]').forEach(b=>b.addEventListener('click',()=>{po=b.dataset.po;document.querySelectorAll('[data-po]').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
 sim();
 
 /* ---------- architecture diagram with moving packets ---------- */
@@ -100,7 +110,7 @@ sim();
  const T=[
   {k:'App cliente',why:'Un solo código para Android, que es la gran mayoría de celulares en Bolivia, y para iOS.',items:['<b>Flutter 3 + Dart</b>, estado con Riverpod','<b>SDK de KYC</b> para selfie y prueba de vida','<b>Biometría</b> para aprobar cada compra','<b>Almacenamiento seguro</b> (Keystore / Keychain)','<b>Notificaciones push</b> con Firebase'],b:['Flutter','Dart','Riverpod','Firebase','Keystore']},
   {k:'App comercio',why:'Funciona en la computadora o el celular de la caja sin instalar nada de la tienda de apps.',items:['<b>Next.js (React)</b> como PWA instalable','<b>WebSocket</b> para ver la aprobación en vivo','<b>Generación de QR</b> por orden, válido 5 min','<b>Roles</b> cajero y supervisor','<b>Reporte diario</b> de ventas y comisiones'],b:['Next.js','React','TypeScript','WebSocket','PWA']},
-  {k:'Backend',why:'TypeScript en todo el stack: el mismo equipo mueve backend, comercio y panel.',items:['<b>NestJS</b> como monolito modular','<b>REST + webhooks</b> firmados con HMAC','<b>Colas SQS</b> y workers para vencimientos y avisos','<b>Motor de riesgo</b> por reglas versionadas','<b>Idempotencia</b> en pagos y liquidaciones'],b:['Node.js 22','NestJS','TypeScript','SQS','OpenAPI']},
+  {k:'Backend',why:'TypeScript en todo el stack: el mismo equipo mueve backend, comercio y panel.',items:['<b>NestJS</b> como monolito modular','<b>REST + webhooks</b> firmados con HMAC','<b>Colas SQS</b> y workers para vencimientos y avisos','<b>Motor de riesgo</b> por reglas versionadas, con política por línea (L1 / L2) y nivel','<b>Idempotencia</b> en pagos y liquidaciones'],b:['Node.js 22','NestJS','TypeScript','SQS','OpenAPI']},
   {k:'Datos',why:'PostgreSQL da transacciones fuertes para dinero; lo analítico va a una réplica.',items:['<b>PostgreSQL 16</b> en RDS Multi-AZ','<b>Redis</b> para sesiones y límites de tasa','<b>S3 cifrado</b> para documentos de identidad','<b>Réplica de lectura</b> + Metabase para reportes','<b>Respaldos diarios</b> con 35 días de retención'],b:['PostgreSQL','Redis','S3','Metabase','dbt']},
   {k:'Infra y DevOps',why:'São Paulo es la región de AWS más cercana a Bolivia (baja latencia).',items:['<b>AWS sa-east-1</b>: ECS Fargate, RDS, ElastiCache','<b>Terraform</b> para toda la infraestructura','<b>GitHub Actions</b> con despliegue azul-verde','<b>Grafana + Sentry</b> para métricas y errores','<b>Guardia</b> con alertas por WhatsApp/correo'],b:['AWS','ECS Fargate','Terraform','GitHub Actions','Grafana','Sentry']},
   {k:'Seguridad',why:'Es un negocio de crédito supervisado: la seguridad es requisito de ASFI, no un extra.',items:['<b>Cifrado</b> AES-256 en reposo (KMS) y TLS 1.3','<b>MFA</b> y mínimo privilegio para el equipo','<b>WAF</b> y límites de tasa contra abuso','<b>Auditoría inmutable</b> de decisiones de crédito','<b>Pentest externo</b> antes de lanzar y cada año'],b:['KMS','WAF','MFA','OWASP ASVS','Pentest']}];
@@ -121,7 +131,7 @@ sim();
   el('text',{x,y:36,'text-anchor':'middle','font-size':13,'font-weight':600,fill:'var(--ink)'},svg,t);
   el('line',{x1:x,x2:x,y1:50,y2:505,stroke:'var(--line)','stroke-dasharray':'4 5'},svg)});
  const X=i=>A[i][1];
- const S=[[1,2,'1. POST /orders (monto)'],[2,1,'2. QR de la orden'],[0,2,'3. Escanea QR y abre la orden'],[2,3,'4. Evaluar usuario y monto'],[3,2,'5. Aprobado · inicial 45%'],[0,4,'6. Paga la inicial por QR'],[4,2,'7. Webhook: pago confirmado'],[2,1,'8. Orden aprobada (WebSocket)'],[2,4,'9. Liquidación al comercio T+1']];
+ const S=[[1,2,'1. POST /orders (monto)'],[2,1,'2. QR de la orden'],[0,2,'3. Escanea QR y abre la orden'],[2,3,'4. Evaluar usuario y monto'],[3,2,'5. Aprobado en L2 · inicial 45%'],[0,4,'6. Paga la inicial por QR'],[4,2,'7. Webhook: pago confirmado'],[2,1,'8. Orden aprobada (WebSocket)'],[2,4,'9. Pago al comercio: fin de mes o día 7']];
  const steps=S.map(([a,b,t],i)=>{const y=82+i*46,g=el('g',{class:'seqstep'},svg);const x1=X(a),x2=X(b),dir=x2>x1?1:-1;
   el('line',{x1:x1+dir*4,x2:x2-dir*6,y1:y,y2:y,stroke:'var(--accent)','stroke-width':1.6,'marker-end':'url(#sa)'},g);
   el('text',{x:(x1+x2)/2,y:y-8,'text-anchor':'middle','font-size':12.5,fill:'var(--ink)'},g,t);return g});
@@ -134,10 +144,10 @@ sim();
 /* ---------- cuota state machine ---------- */
 (function(){
  const svg=$('#states');const defs=el('defs',{},svg);const mk=el('marker',{id:'st',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'},defs);el('path',{d:'M0 0L10 5L0 10z',fill:'var(--muted)'},mk);
- const B={prog:[90,60,'Programada','al aprobar'],venc:[300,60,'Por vencer','D-3 · recordatorio'],pag:[520,60,'Pagada','QR conciliado'],vencida:[300,170,'Vencida','D+1 · cuenta congelada'],cob:[540,170,'En cobranza','D+3 · llamadas'],cast:[790,170,'Castigada','D+90 · pérdida']};
+ const B={prog:[90,60,'Programada','al aprobar'],venc:[300,60,'Por vencer','D-3 · recordatorio'],pag:[520,60,'Pagada','QR conciliado'],vencida:[300,170,'En gracia','D+0 a D+1 · sin multa'],cob:[540,170,'En mora','D+2 · multa Bs 50'],cast:[790,170,'Castigada','D+90 · pérdida']};
  const ar=(d,lab,lx,ly)=>{el('path',{d,fill:'none',stroke:'var(--muted)','stroke-width':1.3,'marker-end':'url(#st)'},svg);if(lab)el('text',{x:lx,y:ly,'font-size':11.5,fill:'var(--muted)','text-anchor':'middle'},svg,lab)};
  ar('M170 60 H218');ar('M380 60 H438','paga',409,50);ar('M300 87 V141','no paga',336,118);ar('M380 170 H458');ar('M540 143 V100 H560 V89','paga',600,124);ar('M620 170 H708');
- Object.values(B).forEach(([x,y,t,s])=>{const good=t==='Pagada',bad=t==='Castigada'||t==='Vencida';
+ Object.values(B).forEach(([x,y,t,s])=>{const good=t==='Pagada',bad=t==='Castigada'||t==='En mora';
   el('rect',{x:x-80,y:y-27,width:160,height:54,rx:10,fill:'var(--surface-2)',stroke:good?'var(--good)':bad?'var(--bad)':'var(--line)','stroke-width':good||bad?1.6:1.2},svg);
   el('text',{x,y:y-3,'text-anchor':'middle','font-size':14,'font-weight':600,fill:'var(--ink)'},svg,t);
   el('text',{x,y:y+15,'text-anchor':'middle','font-size':11.5,fill:'var(--ink-2)'},svg,s)});
@@ -145,9 +155,9 @@ sim();
 
 /* ---------- ERD ---------- */
 (function(){
- const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','inicial_pct','linea_bs','requisito'],comercios:['id','nit','rubro','comision_pct','cuenta_banco'],
-  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','monto_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
-  liquidaciones:['id','comercio_id→comercios','fecha','bruto_bs','comision_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
+ const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','numero','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
+  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
+  liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','multas_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};
  Object.entries(T).forEach(([t,cols])=>{cols.forEach(c=>{const m=c.split('→')[1];if(m){(rel[t]=rel[t]||new Set()).add(m);(rel[m]=rel[m]||new Set()).add(t)}})});
  Object.entries(T).forEach(([t,cols])=>{const d=document.createElement('div');d.className='ent';d.dataset.t=t;
@@ -214,16 +224,23 @@ hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manag
  const lg=el('g',{},svg);el('rect',{x:left,y:bot+36,width:12,height:12,rx:3,fill:'var(--s1)'},lg);el('text',{x:left+18,y:bot+46,class:'lab'},lg,'Servicios por uso');el('rect',{x:left+150,y:bot+36,width:12,height:12,rx:3,fill:'var(--s2)'},lg);el('text',{x:left+168,y:bot+46,class:'lab'},lg,'Nube fija');
 })();
 
-/* waterfall */
+/* waterfall: margin per Bs 1.000 by payout option */
 (function(){
- const svg=$('#water');const S=[['Comisión 7%',70,'up'],['Impago 3%',-15,'dn'],['Costo dinero',-5,'dn'],['Cobro y KYC',-5,'dn'],['Margen',0,'tot']];
- const left=20,right=510,base=230,top=30,max=80,Y=v=>base-v/max*(base-top),bw=(right-left)/S.length;let run=0;
+ const svg=$('#water');
+ const W={m:[['Comisión 4%',40,'up'],['Impago 3%',-15,'dn'],['Costo dinero',-3,'dn'],['Cobro y KYC',-5,'dn'],['Margen',0,'tot']],
+          '7':[['Comisión 8%',80,'up'],['Impago 3%',-15,'dn'],['Costo dinero',-5,'dn'],['Cobro y KYC',-5,'dn'],['Margen',0,'tot']]};
+ function draw(o){svg.innerHTML='';const S=W[o];
+ const left=20,right=510,base=230,top=30,max=90,Y=v=>base-v/max*(base-top),bw=(right-left)/S.length;let run=0;
  el('line',{x1:left,x2:right,y1:base,y2:base,stroke:'var(--muted)'},svg);
  S.forEach(([k,v,t],i)=>{let y0,y1,fill,l;if(t==='up'){y0=0;y1=v;run=v;fill='var(--good)';l='+'+v}else if(t==='dn'){y0=run+v;y1=run;run+=v;fill='var(--bad)';l='−'+(-v)}else{y0=0;y1=run;fill='var(--mark)';l='Bs '+run}
   const x=left+i*bw+bw*.2,w=bw*.6;const r=el('rect',{x,y:Y(y1),width:w,height:Math.max(2,Y(y0)-Y(y1)),rx:4,fill,'fill-opacity':t==='tot'?1:.78,class:'bar'+(t==='dn'?' neg':''),style:`animation-delay:${i*140}ms`},svg);
   el('text',{x:x+w/2,y:Y(y1)-8,'text-anchor':'middle',class:'val',style:t==='tot'?'font-size:14px;font-weight:600':''},svg,l);
   el('text',{x:x+w/2,y:base+20,'text-anchor':'middle',class:'lab','font-size':11.5},svg,k);
   if(i<S.length-1)el('line',{x1:x+w,x2:left+(i+1)*bw+bw*.2,y1:Y(run),y2:Y(run),stroke:'var(--muted)','stroke-dasharray':'3 3'},svg);hover(r,`<b>${k}</b><br>${l} Bs`)});
+ $('#waterTitle').textContent=`Bs ${run} de margen por cada Bs 1.000 con cobro ${o==='m'?'a fin de mes':'a los 7 días'}`;
+ svg.classList.remove('play');void svg.getBoundingClientRect();if(!reduce)svg.classList.add('play')}
+ document.querySelectorAll('[data-wo]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-wo]').forEach(x=>x.setAttribute('aria-pressed',x===b));draw(b.dataset.wo)}));
+ draw('m');
 })();
 
 /* annual */

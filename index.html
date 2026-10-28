@@ -36,7 +36,7 @@
     <div class="lockup"><img src="logo.png" alt="Logo de Cuotitas" width="64" height="64"><div><b>Cuotitas</b><span>Paga a plazos, fácil y seguro</span></div></div>
     <span class="eyebrow">Plan técnico y de negocio · Bolivia · 2026</span>
     <h1>Crédito en cuotas, <span class="g">aprobado en 3 segundos</span> y cobrado por QR.</h1>
-    <p class="lead">Cuotitas es una app de "compra ahora, paga después" inspirada en Cashea. El cliente paga una inicial y el resto en 3 cuotas cada 14 días, sin intereses; el comercio paga una comisión y cobra al día siguiente. Esta página detalla cómo se construye, cuánto cuesta y cuándo da dinero.</p>
+    <p class="lead">Cuotitas es una app de "compra ahora, paga después" inspirada en Cashea. Tiene dos líneas de crédito: la <b>Línea 1</b> para lo de todos los días (farmacia, súper, restaurantes, salud), pagada en una cuota a 14 días, y la <b>Línea 2</b> para todo lo demás, en cuotas según el nivel del cliente. Sin intereses para el cliente. El comercio elige cuándo cobrar: a fin de mes con 4% de comisión o a los 7 días con 8%, y Cuotitas le paga aunque el cliente no pague. Esta página detalla cómo se construye, cuánto cuesta y cuándo da dinero.</p>
     <div class="chips"><span class="chip">Flutter</span><span class="chip">NestJS · TypeScript</span><span class="chip">PostgreSQL 16</span><span class="chip">AWS São Paulo</span><span class="chip">QR interoperable</span><span class="chip">WhatsApp API</span></div>
     <div class="kpis">
       <div class="kpi"><b class="num" data-count="48" data-pre="US$ " data-suf=" mil">US$ 48 mil</b><span>desarrollo con Servisofts SRL</span></div>
@@ -66,28 +66,68 @@
 <section id="producto">
   <header class="rv">
     <span class="eyebrow">Producto</span>
-    <h2>Una compra, cuatro pagos, cero intereses</h2>
-    <p class="lead">La inicial alta al empezar es el filtro de riesgo. Pagar a tiempo sube de nivel: baja la inicial y sube la línea. Prueba el simulador.</p>
+    <h2>Dos líneas de crédito, un solo nivel</h2>
+    <p class="lead">Cada cliente tiene dos líneas. El rubro del comercio decide cuál se usa, sin que el cliente elija nada. Pagar a tiempo en cualquiera de las dos sube su nivel, y el nivel mejora las dos.</p>
   </header>
+  <div class="lines">
+    <div class="card glow line-card l1 rv">
+      <span class="tag">Línea 1 · Día a día</span>
+      <div class="big">1 cuota a 14 días</div>
+      <p style="color:var(--ink-2)">Para compras chicas y frecuentes. El cliente se lleva el producto hoy y paga el total en 14 días, sin inicial. Al pagar, la línea se libera de nuevo.</p>
+      <div class="rubros"><span>Farmacias</span><span>Supermercados</span><span>Restaurantes</span><span>Salud</span><span>Alimentación</span></div>
+      <table class="minitbl"><thead><tr><th>Nivel</th><th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>N5</th></tr></thead>
+        <tbody><tr><td>Línea Bs</td><td>300</td><td>500</td><td>800</td><td>1.200</td><td>1.500</td></tr></tbody></table>
+      <p class="note">Límites por nivel: supuestos del plan. La comisión depende de cuándo cobra el comercio (abajo).</p>
+    </div>
+    <div class="card glow line-card l2 rv">
+      <span class="tag">Línea 2 · Todo lo demás</span>
+      <div class="big">Inicial + 3 a 6 cuotas</div>
+      <p style="color:var(--ink-2)">Para compras grandes en cualquier rubro. La inicial, el número de cuotas y la línea dependen del nivel. Cuotas cada 14 días.</p>
+      <div class="rubros"><span>Hoteles</span><span>Ferreterías</span><span>Electrónica</span><span>Celulares</span><span>Ropa</span><span>Motos</span><span>y más</span></div>
+      <table class="minitbl"><thead><tr><th>Nivel</th><th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>N5</th></tr></thead>
+        <tbody><tr><td>Inicial</td><td>50%</td><td>45%</td><td>40%</td><td>30%</td><td>25%</td></tr><tr><td>Cuotas</td><td>3</td><td>3</td><td>4</td><td>6</td><td>6</td></tr><tr><td>Línea Bs</td><td>500</td><td>1.000</td><td>2.000</td><td>4.000</td><td>6.000</td></tr></tbody></table>
+      <p class="note">Niveles N2 a N4 y cuotas por nivel: supuestos del plan. La comisión depende de cuándo cobra el comercio (abajo).</p>
+    </div>
+  </div>
+  <div class="payout">
+    <div class="card glow rv"><span class="opt">Opción A · Cobro a fin de mes</span><div class="pct">4%</div>
+      <p style="color:var(--ink-2)">Cuotitas paga al comercio, el último día del mes, todo lo vendido en el mes menos 4%. Si un cliente no paga sus cuotas, <b style="color:var(--ink)">Cuotitas igual le paga al comercio</b> y asume la pérdida.</p></div>
+    <div class="card glow rv"><span class="opt">Opción B · Cobro a los 7 días</span><div class="pct">8%</div>
+      <p style="color:var(--ink-2)">Para el comercio que necesita liquidez: recibe cada venta 7 días después, menos 8%. La garantía es la misma: el impago lo asume Cuotitas.</p></div>
+  </div>
+  <div class="rules">
+    <div class="card glow rv"><h3>Por qué dos líneas</h3><p style="color:var(--ink-2);font-size:15px">La Línea 1 se usa cada semana: crea hábito, da datos de pago rápido y sube al cliente de nivel antes de que pida un crédito grande.</p></div>
+    <div class="card glow rv"><h3>Un atraso congela todo</h3><p style="color:var(--ink-2);font-size:15px">Si el cliente no paga en cualquiera de las líneas, las dos se congelan hasta que se ponga al día.</p></div>
+    <div class="card glow rv"><h3>1 día de gracia, luego Bs 50</h3><p style="color:var(--ink-2);font-size:15px">Cuando vence una cuota, el cliente tiene un día de gracia automático. Si sigue sin pagar, se le cobra una <b style="color:var(--ink)">multa fija de Bs 50 por cada cuota vencida</b>, y esa multa va completa al comercio.</p></div>
+    <div class="card glow rv"><h3>Riesgo separado</h3><p style="color:var(--ink-2);font-size:15px">Cada línea tiene su propio límite y su propia meta de mora, así una pérdida en compras grandes no frena el día a día.</p></div>
+  </div>
   <div class="card glow sim rv">
     <div style="display:grid;gap:18px;align-content:start">
       <div><label for="precio">Precio del producto: <b class="num" id="precioTxt">Bs 1.000</b></label>
         <input id="precio" type="range" min="200" max="8000" step="100" value="1000"></div>
+      <div><label id="lnLab">Línea de crédito</label>
+        <div class="seg" role="group" aria-labelledby="lnLab" style="grid-template-columns:1fr 1fr">
+          <button type="button" data-ln="1" aria-pressed="false">L1 · Día a día</button><button type="button" data-ln="2" aria-pressed="true">L2 · Todo</button>
+        </div></div>
+      <div><label id="poLab">Cobro del comercio</label>
+        <div class="seg" role="group" aria-labelledby="poLab" style="grid-template-columns:1fr 1fr">
+          <button type="button" data-po="m" aria-pressed="true">Fin de mes · 4%</button><button type="button" data-po="7" aria-pressed="false">7 días · 8%</button>
+        </div></div>
       <div><label id="lvLab">Nivel del cliente</label>
         <div class="seg" role="group" aria-labelledby="lvLab">
           <button type="button" data-l="1" aria-pressed="true">N1</button><button type="button" data-l="2" aria-pressed="false">N2</button><button type="button" data-l="3" aria-pressed="false">N3</button><button type="button" data-l="4" aria-pressed="false">N4</button><button type="button" data-l="5" aria-pressed="false">N5</button>
         </div></div>
-      <p class="note">N1: 50% de inicial y línea de Bs 500. N5: 25% y Bs 6.000. N2 a N4 son valores intermedios supuestos.</p>
+      <p class="note">Línea 2: inicial, cuotas y límite según el nivel. Línea 1: sin inicial, una cuota a 14 días.</p>
     </div>
     <div style="display:grid;gap:14px;min-width:0" aria-live="polite">
-      <div class="split" aria-hidden="true"><div class="ini" id="bIni" style="flex-grow:3">Inicial</div><div class="cu" style="flex-grow:1">1</div><div class="cu" style="flex-grow:1">2</div><div class="cu" style="flex-grow:1">3</div></div>
+      <div class="split" aria-hidden="true" id="split"></div>
       <div class="cells">
         <div class="cell"><span>Inicial hoy</span><b id="iniTxt">Bs 500</b></div>
-        <div class="cell"><span>Cada cuota (d14, d28, d42)</span><b id="cuTxt">Bs 166,67</b></div>
+        <div class="cell"><span id="cuLab">Cada cuota (d14, d28, d42)</span><b id="cuTxt">Bs 166,67</b></div>
         <div class="cell"><span>Línea del nivel</span><b id="lineaTxt">Bs 500</b></div>
         <div class="cell"><span>Financia Cuotitas</span><b id="finTxt">Bs 500</b></div>
-        <div class="cell"><span>Comisión al comercio (7%)</span><b id="comTxt">Bs 70</b></div>
-        <div class="cell"><span>Cuotitas paga al comercio T+1</span><b id="netTxt">Bs 430</b></div>
+        <div class="cell"><span id="comLab">Comisión al comercio (4%)</span><b id="comTxt">Bs 40</b></div>
+        <div class="cell"><span id="netLab">Cuotitas paga al comercio a fin de mes</span><b id="netTxt">Bs 460</b></div>
       </div>
       <div class="status ok" id="estado"><i></i><span>Aprobado: dentro de la línea</span></div>
     </div>
@@ -127,9 +167,11 @@
 { <span class="s">"merchant_id"</span>: <span class="s">"mer_204"</span>, <span class="s">"amount_bs"</span>: <span class="n">1200.00</span> }
 → <span class="n">201</span> { <span class="s">"order_id"</span>, <span class="s">"qr_payload"</span>, <span class="s">"expires_in"</span>: <span class="n">300</span> }
 
-<span class="c"># El cliente aprueba con biometría</span>
+<span class="c"># El cliente aprueba con biometría; la línea sale del rubro del comercio</span>
 <span class="k">POST</span> /v1/orders/{id}/approve
-→ <span class="n">200</span> { <span class="s">"down_payment_bs"</span>: <span class="n">540</span>, <span class="s">"installments"</span>: [<span class="n">220</span>, <span class="n">220</span>, <span class="n">220</span>] }
+→ <span class="n">200</span> { <span class="s">"line"</span>: <span class="s">"L2"</span>, <span class="s">"down_payment_bs"</span>: <span class="n">540</span>, <span class="s">"installments"</span>: [<span class="n">220</span>, <span class="n">220</span>, <span class="n">220</span>] }
+<span class="c"># En farmacia o súper la orden usa L1:</span>
+→ <span class="n">200</span> { <span class="s">"line"</span>: <span class="s">"L1"</span>, <span class="s">"down_payment_bs"</span>: <span class="n">0</span>, <span class="s">"installments"</span>: [<span class="n">85.50</span>] }
 
 <span class="c"># El banco confirma un pago QR (firma HMAC)</span>
 <span class="k">POST</span> /v1/webhooks/bank/qr-paid
@@ -159,8 +201,8 @@
   </div>
   <div class="card rv">
     <h3>Estados de una cuota</h3>
-    <div class="scrollx"><svg class="diagram" id="states" viewBox="0 0 960 230" role="img" aria-label="Estados de una cuota: programada, por vencer, pagada, vencida, en cobranza, castigada"></svg></div>
-    <p class="note">Al pasar a "vencida" la cuenta se congela y no puede comprar hasta pagar. Los días son supuestos del plan.</p>
+    <div class="scrollx"><svg class="diagram" id="states" viewBox="0 0 960 230" role="img" aria-label="Estados de una cuota: programada, por vencer, pagada, en gracia, en mora con multa, castigada"></svg></div>
+    <p class="note">El día del vencimiento y el siguiente son de gracia, sin multa. Desde el día 2 la cuota queda en mora: multa fija de Bs 50 (una vez por cuota) que se transfiere al comercio, y la cuenta se congela hasta pagar. Los días de cobranza y castigo son supuestos del plan.</p>
   </div>
 </section>
 
@@ -168,8 +210,8 @@
 <section id="datos">
   <header class="rv">
     <span class="eyebrow">Modelo de datos</span>
-    <h2>Ocho tablas sostienen el negocio</h2>
-    <p class="lead">Pasa el cursor sobre una tabla para ver con cuáles se relaciona. <span class="mono" style="color:var(--sun)">PK</span> es la clave primaria y <span class="mono" style="color:var(--cyan)">FK</span> una referencia a otra tabla.</p>
+    <h2>Diez tablas sostienen el negocio, con dos líneas por cliente</h2>
+    <p class="lead">Cada cliente tiene una fila en <span class="mono">lineas_credito</span> por línea, y <span class="mono">politicas_linea</span> guarda la inicial, las cuotas y el límite de cada línea por nivel, así se cambian sin tocar código. Pasa el cursor sobre una tabla para ver con cuáles se relaciona. <span class="mono" style="color:var(--sun)">PK</span> es la clave primaria y <span class="mono" style="color:var(--cyan)">FK</span> una referencia a otra tabla.</p>
   </header>
   <div class="erd rv" id="erd"></div>
 </section>
@@ -241,9 +283,12 @@
   </div>
   <div class="grid2">
     <div class="card rv">
-      <h3>Bs 45 de margen por cada Bs 1.000 vendidos</h3>
-      <svg class="chart" id="water" viewBox="0 0 520 280" role="img" aria-label="De Bs 70 de comisión quedan Bs 45"></svg>
-      <p class="note">Compra de Bs 1.000 en nivel 1, comisión de 7%. Verde suma, rojo resta, gris es el resultado.</p>
+      <h3 id="waterTitle">Bs 17 de margen por cada Bs 1.000 con cobro a fin de mes</h3>
+      <div class="seg" role="group" aria-label="Opción de cobro del comercio" style="grid-template-columns:1fr 1fr;max-width:360px">
+        <button type="button" data-wo="m" aria-pressed="true">Fin de mes · 4%</button><button type="button" data-wo="7" aria-pressed="false">7 días · 8%</button>
+      </div>
+      <svg class="chart" id="water" viewBox="0 0 520 280" role="img" aria-label="Margen por compra de Bs 1.000 según la opción de cobro"></svg>
+      <p class="note">Compra de Bs 1.000 en Línea 2, nivel 1 (Bs 500 financiados). Verde suma, rojo resta, gris es el resultado. Con cobro a fin de mes Cuotitas recibe parte de las cuotas antes de pagar, por eso el costo del dinero es menor. Supuestos del plan.</p>
     </div>
     <div class="card rv" style="align-content:start">
       <h3>Competencia</h3>

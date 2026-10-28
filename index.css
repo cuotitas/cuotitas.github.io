@@ -125,6 +125,25 @@ section > header{display:grid;gap:14px}
 .status i{width:8px;height:8px;border-radius:50%;background:currentColor}
 .status.ok{color:var(--accent-ink)}.status.bad{color:var(--bad)}
 
+/* credit lines */
+.lines{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.line-card{border-top:3px solid var(--s1)}
+.line-card.l1{border-top-color:var(--sun)}
+.line-card .tag{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sun)}
+.line-card.l2 .tag{color:var(--accent-ink)}
+.line-card .big{font:700 26px/1.1 var(--f-display)}
+.rubros{display:flex;flex-wrap:wrap;gap:6px}
+.rubros span{font:500 12.5px var(--f-mono);padding:5px 9px;border-radius:8px;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-2)}
+.minitbl{width:100%;border-collapse:collapse;font-size:13px}
+.minitbl th,.minitbl td{padding:7px 8px;border-bottom:1px solid var(--line);background:none}
+.minitbl td{font-family:var(--f-mono)}
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+
+.payout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.payout .pct{font:800 44px/1 var(--f-display);color:var(--accent-ink)}
+.payout .opt{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:900px){.payout{grid-template-columns:1fr}}
+
 /* stats */
 .stat b{font:700 30px/1.1 var(--f-display)}
 .stat span{font-size:14px;color:var(--ink-2)}
@@ -157,7 +176,7 @@ pre.code{margin:0;background:var(--bg-2);border:1px solid var(--line);border-rad
 pre.code .k{color:var(--cyan)}pre.code .s{color:var(--accent-ink)}pre.code .c{color:var(--muted)}pre.code .n{color:var(--sun)}
 
 /* erd */
-.erd{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.erd{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .ent{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;font:12.5px/1.6 var(--f-mono);transition:border-color .2s,transform .2s}
 .ent:hover,.ent.hl{border-color:var(--accent);transform:translateY(-2px)}
 .ent b{display:block;padding:8px 12px;background:var(--surface-2);border-bottom:1px solid var(--line);color:var(--ink);font-weight:600}
@@ -213,7 +232,7 @@ footer{padding-block:44px 70px;display:grid;gap:10px;font-size:13px;color:var(--
 footer ol{margin:0;padding-left:18px;display:grid;gap:4px}
 
 @media (max-width:900px){
-  .hero,.grid2,.sim,.tabpanel{grid-template-columns:1fr}
+  .hero,.grid2,.sim,.tabpanel,.lines,.rules{grid-template-columns:1fr}
   .grid3,.grid4,.road,.erd{grid-template-columns:1fr 1fr}
   .kpis{grid-template-columns:1fr 1fr}
 }
