@@ -39,10 +39,10 @@
     <p class="lead">Cuotitas es una app de "compra ahora, paga después" inspirada en Cashea. El cliente paga una inicial y el resto en 3 cuotas cada 14 días, sin intereses; el comercio paga una comisión y cobra al día siguiente. Esta página detalla cómo se construye, cuánto cuesta y cuándo da dinero.</p>
     <div class="chips"><span class="chip">Flutter</span><span class="chip">NestJS · TypeScript</span><span class="chip">PostgreSQL 16</span><span class="chip">AWS São Paulo</span><span class="chip">QR interoperable</span><span class="chip">WhatsApp API</span></div>
     <div class="kpis">
-      <div class="kpi"><b class="num" data-count="890" data-pre="Bs " data-suf=" mil">Bs 890 mil</b><span>desarrollo del MVP</span></div>
-      <div class="kpi"><b class="num">6 meses</b><span>hasta producción endurecida</span></div>
-      <div class="kpi"><b class="num" data-count="3360" data-suf=" h">3.360 h</b><span>de ingeniería estimadas</span></div>
-      <div class="kpi"><b class="num">Bs 12,8 M</b><span>capital total del plan</span></div>
+      <div class="kpi"><b class="num" data-count="48" data-pre="US$ " data-suf=" mil">US$ 48 mil</b><span>desarrollo con Servisofts SRL</span></div>
+      <div class="kpi"><b class="num">8 meses</b><span>hasta producción endurecida</span></div>
+      <div class="kpi"><b class="num">9 personas</b><span>en el equipo de desarrollo</span></div>
+      <div class="kpi"><b class="num">Bs 12,5 M</b><span>capital total del plan</span></div>
     </div>
   </div>
   <div class="console" aria-label="Simulación de eventos de la API de Cuotitas">
@@ -178,45 +178,45 @@
 <section id="costo">
   <header class="rv">
     <span class="eyebrow">Costo de desarrollo</span>
-    <h2>Bs 890 mil para tener la plataforma en producción en 6 meses</h2>
-    <p class="lead">Con equipo propio en Santa Cruz: 3 meses de MVP y 3 de piloto, endurecimiento y prueba de seguridad. Equivale a unos US$ 75.000 y ya está incluido en el capital total de Bs 12,8 M.</p>
+    <h2>US$ 48.000 para tener la plataforma en producción en 8 meses</h2>
+    <p class="lead">El desarrollo lo hace <b style="color:var(--ink)">Servisofts SRL</b> con su propio personal y sus propios equipos: US$ 6.000 al mes durante 8 meses (unos Bs 571.000), con diseño UX/UI y DevOps incluidos. Son 4 meses de MVP y 4 de piloto, endurecimiento y prueba de seguridad. La nube, el pentest y los servicios externos se pagan aparte.</p>
   </header>
   <div class="grid2">
     <div class="card rv">
       <h3>En qué se va el dinero</h3>
-      <svg class="chart" id="devcost" viewBox="0 0 520 330" role="img" aria-label="Costo de desarrollo por rubro"></svg>
-      <p class="note">Azul: equipo; turquesa: infraestructura y seguridad; verde: otros gastos; gris: contingencia. Bs, 6 meses. Equipo con 25% de cargas sociales y aguinaldo. Contingencia de 15% sobre el total.</p>
+      <svg class="chart" id="devcost" viewBox="0 0 520 190" role="img" aria-label="Costo de desarrollo por rubro"></svg>
+      <p class="note">Azul: desarrollo; turquesa: infraestructura y seguridad; verde: servicios externos. Bs, 8 meses. Total aproximado Bs 680.000 (US$ 57.000). La nube de 8 meses se calcula con el mismo gasto mensual del plan anterior.</p>
     </div>
     <div class="card rv">
-      <h3>Esfuerzo por módulo: 84 semanas-persona</h3>
-      <svg class="chart" id="effort" viewBox="0 0 520 330" role="img" aria-label="Semanas-persona por módulo"></svg>
-      <p class="note">1 semana-persona = 40 horas. Total 3.360 horas.</p>
+      <h3>Equipo de Servisofts SRL: 72 meses-persona</h3>
+      <svg class="chart" id="effort" viewBox="0 0 520 320" role="img" aria-label="Meses-persona por rol"></svg>
+      <p class="note">9 personas durante 8 meses, incluidas en el pago mensual de US$ 6.000.</p>
     </div>
   </div>
   <div class="card rv">
-    <h3>Plan de 12 sprints de 2 semanas</h3>
-    <div class="scrollx"><svg class="diagram" id="gantt" viewBox="0 0 960 500" role="img" aria-label="Cronograma de desarrollo en 12 sprints"></svg></div>
+    <h3>Plan de 16 sprints de 2 semanas</h3>
+    <div class="scrollx"><svg class="diagram" id="gantt" viewBox="0 0 960 500" role="img" aria-label="Cronograma de desarrollo en 16 sprints"></svg></div>
     <div class="legend"><span><i style="background:var(--s1)"></i>Producto</span><span><i style="background:var(--s2)"></i>Infraestructura y seguridad</span><span><i style="background:var(--s3)"></i>Calidad y piloto</span></div>
   </div>
   <div class="grid2">
     <div class="tbl rv"><table>
-      <thead><tr><th>Equipo de desarrollo</th><th class="r">Bs/mes bruto</th><th class="r">Meses</th><th class="r">Costo total</th></tr></thead>
+      <thead><tr><th>Equipo Servisofts SRL</th><th class="r">Personas</th><th class="r">Meses</th><th class="r">Meses-persona</th></tr></thead>
       <tbody>
-        <tr><td>CTO / arquitecto</td><td class="r">18.000</td><td class="r">6</td><td class="r">135.000</td></tr>
-        <tr><td>Backend senior</td><td class="r">14.000</td><td class="r">6</td><td class="r">105.000</td></tr>
-        <tr><td>Desarrollador Flutter</td><td class="r">12.000</td><td class="r">6</td><td class="r">90.000</td></tr>
-        <tr><td>Backend semi-senior</td><td class="r">10.000</td><td class="r">6</td><td class="r">75.000</td></tr>
-        <tr><td>Desarrollador web (React)</td><td class="r">10.000</td><td class="r">6</td><td class="r">75.000</td></tr>
-        <tr><td>QA / pruebas</td><td class="r">7.000</td><td class="r">6</td><td class="r">52.500</td></tr>
-        <tr><td>Diseño UX/UI (freelance)</td><td class="r">8.000</td><td class="r">3</td><td class="r">24.000</td></tr>
-        <tr><td>DevOps y seguridad (medio tiempo)</td><td class="r">7.000</td><td class="r">6</td><td class="r">42.000</td></tr>
-        <tr class="tot"><td>Total personas</td><td class="r"></td><td class="r"></td><td class="r">598.500</td></tr>
+        <tr><td>Project manager</td><td class="r">1</td><td class="r">8</td><td class="r">8</td></tr>
+        <tr><td>Desarrollador backend</td><td class="r">2</td><td class="r">8</td><td class="r">16</td></tr>
+        <tr><td>Desarrollador frontend</td><td class="r">2</td><td class="r">8</td><td class="r">16</td></tr>
+        <tr><td>Integrador</td><td class="r">1</td><td class="r">8</td><td class="r">8</td></tr>
+        <tr><td>QA / pruebas</td><td class="r">1</td><td class="r">8</td><td class="r">8</td></tr>
+        <tr><td>Diseño UX/UI</td><td class="r">1</td><td class="r">8</td><td class="r">8</td></tr>
+        <tr><td>DevOps y seguridad</td><td class="r">1</td><td class="r">8</td><td class="r">8</td></tr>
+        <tr class="tot"><td>Total equipo</td><td class="r">9</td><td class="r">8</td><td class="r">72</td></tr>
+        <tr class="tot"><td>Precio del desarrollo</td><td class="r" colspan="3">US$ 6.000 × 8 = US$ 48.000</td></tr>
       </tbody></table></div>
     <div class="card rv">
-      <h3>Equipo propio o fábrica de software</h3>
-      <svg class="chart" id="vs" viewBox="0 0 520 190" role="img" aria-label="Comparación de costo entre equipo propio y fábrica de software"></svg>
-      <p class="note">Fábrica: 3.360 h a US$ 30/h más 20% de gestión de proyecto (rango de US$ 100.000 a 121.000). Estimación propia.</p>
-      <p style="color:var(--ink-2);font-size:15px">Recomiendo <b style="color:var(--ink)">equipo propio</b>: el scoring, la cobranza y las integraciones bancarias son el corazón del negocio y conviene que el conocimiento quede en la empresa. Una fábrica sirve para acelerar piezas acotadas, como el panel interno.</p>
+      <h3>Servisofts, equipo propio o fábrica de software</h3>
+      <svg class="chart" id="vs" viewBox="0 0 520 240" role="img" aria-label="Comparación de costo: Servisofts SRL, equipo propio y fábrica de software"></svg>
+      <p class="note">Servisofts y fábrica: solo desarrollo. Equipo propio: estimación anterior de 6 meses con computadoras, nube, pentest y contingencia. Fábrica: 3.360 h a US$ 30/h más 20% de gestión. Tipo de cambio Bs 11,9.</p>
+      <p style="color:var(--ink-2);font-size:15px">Con <b style="color:var(--ink)">Servisofts SRL</b> el desarrollo cuesta un tercio menos que armar un equipo propio y arranca sin contratar ni comprar equipos. Como el scoring, la cobranza y las integraciones bancarias son el corazón del negocio, el contrato debe dejar el código a nombre de Cuotitas, con acceso al repositorio desde el día 1 y documentación de la arquitectura.</p>
     </div>
   </div>
   <div class="card rv">
@@ -264,17 +264,17 @@
 <section id="numeros">
   <header class="rv">
     <span class="eyebrow">Proyección a 3 años</span>
-    <h2>Hasta Bs 11,1 M antes de generar caja; ganancia operativa desde el mes 19</h2>
-    <p class="lead">Unos Bs 8 M del capital quedan prestados en la cartera y vuelven. Con 15% de colchón, la meta es levantar Bs 12,8 M: semilla de Bs 6 M y Serie A de Bs 7 M, más deuda para la cartera desde el año 2.</p>
+    <h2>Hasta Bs 10,9 M antes de generar caja; ganancia operativa desde el mes 20</h2>
+    <p class="lead">Unos Bs 8 M del capital quedan prestados en la cartera y vuelven. Con 15% de colchón, la meta es levantar Bs 12,5 M: semilla de Bs 6 M y Serie A de Bs 6,5 M, más deuda para la cartera desde el año 2.</p>
   </header>
   <div class="card rv">
-    <svg class="chart" id="cash" viewBox="0 0 960 330" role="img" aria-label="Caja acumulada: mínimo de Bs 11,1 M en el mes 25"></svg>
-    <p class="note">Caja acumulada por mes, millones de Bs, incluida la parte de la cartera pagada con capital propio. Pasa el cursor para ver cada mes. Escenario base, estimación propia.</p>
+    <svg class="chart" id="cash" viewBox="0 0 960 330" role="img" aria-label="Caja acumulada: mínimo de Bs 10,9 M en el mes 26"></svg>
+    <p class="note">Caja acumulada por mes, millones de Bs, incluida la parte de la cartera pagada con capital propio. Pasa el cursor para ver cada mes. Escenario base, estimación propia, recalculada con el desarrollo de Servisofts (Bs 680.000 en los meses 1 a 8) y el piloto en el mes 5: la operación del plan anterior se corre un mes.</p>
   </div>
   <div class="grid2">
     <div class="card rv"><h3>Resultado operativo por año</h3>
-      <svg class="chart" id="annual" viewBox="0 0 520 250" role="img" aria-label="Resultado operativo: -2,94, -0,17 y 9,92 millones de Bs"></svg>
-      <p class="note">Millones de Bs, antes del impuesto a las utilidades (25%).</p></div>
+      <svg class="chart" id="annual" viewBox="0 0 520 250" role="img" aria-label="Resultado operativo: -2,53, -0,69 y 8,93 millones de Bs"></svg>
+      <p class="note">Millones de Bs, antes del impuesto a las utilidades (25%). La tabla de indicadores es la del plan base con piloto en el mes 4; con el piloto en el mes 5 cada cifra llega más o menos un mes después.</p></div>
     <div class="tbl rv"><table>
       <thead><tr><th>Millones de Bs</th><th class="r">Año 1</th><th class="r">Año 2</th><th class="r">Año 3</th></tr></thead>
       <tbody>
@@ -289,8 +289,8 @@
       </tbody></table></div>
   </div>
   <div class="road">
-    <div class="card phase rv"><span class="when">Meses 1 a 3</span><h3>Construir</h3><ul><li>Sociedad y trámite ASFI</li><li>MVP de las 3 apps</li><li>10 comercios piloto</li></ul></div>
-    <div class="card phase now rv"><span class="when">Meses 4 a 12</span><h3>Lanzar en Santa Cruz</h3><ul><li>Piloto en el mes 4</li><li>Hasta 300 comercios</li><li>Ventas y redes</li></ul></div>
+    <div class="card phase rv"><span class="when">Meses 1 a 4</span><h3>Construir</h3><ul><li>Sociedad y trámite ASFI</li><li>MVP de las 3 apps</li><li>10 comercios piloto</li></ul></div>
+    <div class="card phase now rv"><span class="when">Meses 5 a 12</span><h3>Lanzar en Santa Cruz</h3><ul><li>Piloto en el mes 5</li><li>Hasta 300 comercios</li><li>Ventas y redes</li></ul></div>
     <div class="card phase rv"><span class="when">Año 2</span><h3>Crecer</h3><ul><li>La Paz y El Alto</li><li>Membresía y vitrina</li><li>Deuda para cartera</li></ul></div>
     <div class="card phase rv"><span class="when">Año 3</span><h3>Ampliar</h3><ul><li>Cochabamba</li><li>Compras online</li><li>Cuotas a 6 meses</li></ul></div>
   </div>
@@ -312,7 +312,7 @@
     <li><a href="https://asfi.gob.bo/sites/default/files/2025-07/Empresas%20de%20tecnolog%C3%ADa%20financiera%20en%20Bolivia%20Un%20nuevo%20horizonte%20para%20la%20innovaci%C3%B3n%20financiera.pdf">ASFI: empresas de tecnología financiera</a> · <a href="https://www.latamfintech.co/articles/descubre-como-la-fintech-boliviana-presto-esta-transformando-el-acceso-al-credito-con-su-tarjeta-bnpl">Latam Fintech: Presto</a></li>
     <li><a href="https://www.getontop.com/payroll-in/bolivia">Ontop: cargas sociales en Bolivia</a> · <a href="https://www.bloomberglinea.com/latinoamerica/bolivia/rodrigo-paz-aumenta-un-20-el-salario-minimo-en-bolivia/">Bloomberg Línea: salario mínimo 2026</a></li>
   </ol>
-  <p>Costos de desarrollo, sueldos, tarifas y proyecciones son estimaciones del plan, no cotizaciones. La consola del inicio es una simulación. Tipo de cambio de referencia: Bs 11,9 por US$.</p>
+  <p>Desarrollo a cargo de Servisofts SRL por US$ 6.000 al mes durante 8 meses. Los demás costos, sueldos, tarifas y proyecciones son estimaciones del plan, no cotizaciones. La consola del inicio es una simulación. Tipo de cambio de referencia: Bs 11,9 por US$.</p>
 </footer>
 </main>
 <div class="tip" id="tip" role="status"></div>

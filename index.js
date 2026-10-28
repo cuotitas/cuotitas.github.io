@@ -165,36 +165,38 @@ function hbars(id,rows,{max,left=150,w=520,rowH=36,top=6,f,color}){
   el('text',{x:left+X(r.v)+8,y:y+rowH/2+4,class:'val'},svg,f(r.v));
   const hit=el('rect',{x:0,y,width:w,height:rowH,fill:'transparent'},svg);hover(hit,`<b>${r.k}</b><br>${f(r.v)}${r.n?'<br>'+r.n:''}`)});
 }
-hbars('devcost',[{k:'Equipo (6 personas)',v:532500,n:'6 meses, con cargas sociales'},{k:'Contingencia 15%',v:116175},{k:'Computadoras',v:63000,n:'7 equipos'},{k:'DevOps y seguridad',v:42000,n:'medio tiempo'},{k:'Pentest externo',v:35000},{k:'Nube (dev, staging, prod)',v:33000},{k:'Servicios externos',v:30000,n:'KYC, WhatsApp, cuentas de tiendas'},{k:'Diseño UX/UI',v:24000},{k:'Licencias',v:15000,n:'GitHub, Figma, Workspace'}],
- {max:532500,left:170,rowH:35,f:v=>'Bs '+fmt(v),color:r=>r.k.startsWith('Equipo')?'var(--s1)':r.k.startsWith('Contingencia')?'var(--mark)':(['Nube (dev, staging, prod)','DevOps y seguridad','Pentest externo'].includes(r.k)?'var(--s2)':'var(--s3)')});
-hbars('effort',[{k:'App del cliente',v:12},{k:'Cuotas y cobros QR',v:10},{k:'QA y pruebas',v:10},{k:'Compras y órdenes',v:8},{k:'Panel interno',v:8},{k:'Infra y seguridad',v:8},{k:'Registro y KYC',v:6},{k:'Niveles y riesgo',v:6},{k:'App del comercio',v:6},{k:'Cobranza y avisos',v:5},{k:'Liquidación',v:5}],
- {max:12,left:150,rowH:29,f:v=>v+' sem · '+fmt(v*40)+' h',color:r=>r.k==='Infra y seguridad'?'var(--s2)':r.k==='QA y pruebas'?'var(--s3)':'var(--s1)'});
+hbars('devcost',[{k:'Desarrollo Servisofts SRL',v:571200,n:'US$ 6.000 × 8 meses, con UX/UI y DevOps'},{k:'Nube (8 meses)',v:44000,n:'dev, staging y producción'},{k:'Pentest externo',v:35000},{k:'Servicios externos',v:30000,n:'KYC, WhatsApp, cuentas de tiendas'}],
+ {max:571200,left:170,rowH:44,f:v=>'Bs '+fmt(v),color:r=>r.k.startsWith('Desarrollo')?'var(--s1)':r.k==='Servicios externos'?'var(--s3)':'var(--s2)'});
+hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manager',v:8},{k:'Integrador',v:8},{k:'QA / pruebas',v:8},{k:'Diseño UX/UI',v:8},{k:'DevOps',v:8}],
+ {max:16,left:150,rowH:44,f:v=>v+' meses-persona',color:r=>r.k==='Integrador'||r.k==='DevOps'?'var(--s2)':r.k.startsWith('QA')?'var(--s3)':r.k==='Project manager'?'var(--mark)':'var(--s1)'});
 
-/* in-house vs factory: range bar */
+/* Servisofts vs in-house vs factory: range bars */
 (function(){
  const svg=$('#vs');const left=150,W=300,max=1500000,X=v=>left+v/max*W;
- [0,500000,1000000,1500000].forEach(t=>{el('line',{x1:X(t),x2:X(t),y1:14,y2:130,stroke:'var(--line)'},svg);el('text',{x:X(t),y:150,'text-anchor':'middle',class:'lab'},svg,t?fmt(t/1e6,1)+' M':'0')});
- el('text',{x:left-10,y:52,'text-anchor':'end',class:'lab'},svg,'Equipo propio');
- const a=el('rect',{x:left,y:34,width:X(890675)-left,height:28,rx:4,fill:'var(--s1)',class:'hbar'},svg);el('text',{x:X(890675)+8,y:53,class:'val'},svg,'Bs 0,89 M');hover(a,'Equipo propio: Bs 890.675');
- el('text',{x:left-10,y:104,'text-anchor':'end',class:'lab'},svg,'Fábrica de software');
- const b=el('rect',{x:left,y:86,width:X(1200000)-left,height:28,rx:4,fill:'var(--mark)',class:'hbar',style:'animation-delay:120ms'},svg);
- el('line',{x1:X(1200000),x2:X(1440000),y1:100,y2:100,stroke:'var(--ink-2)','stroke-width':2},svg);el('line',{x1:X(1440000),x2:X(1440000),y1:92,y2:108,stroke:'var(--ink-2)','stroke-width':2},svg);
- el('text',{x:X(1440000)+8,y:105,class:'val'},svg,'Bs 1,2–1,44 M');hover(b,'Fábrica: Bs 1,2 a 1,44 M');
- el('text',{x:left,y:178,class:'lab'},svg,'millones de Bs');
+ [0,500000,1000000,1500000].forEach(t=>{el('line',{x1:X(t),x2:X(t),y1:14,y2:182,stroke:'var(--line)'},svg);el('text',{x:X(t),y:202,'text-anchor':'middle',class:'lab'},svg,t?fmt(t/1e6,1)+' M':'0')});
+ el('text',{x:left-10,y:52,'text-anchor':'end',class:'lab'},svg,'Servisofts SRL');
+ const s=el('rect',{x:left,y:34,width:X(571200)-left,height:28,rx:4,fill:'var(--accent)',class:'hbar'},svg);el('text',{x:X(571200)+8,y:53,class:'val'},svg,'Bs 0,57 M');hover(s,'Servisofts SRL: US$ 48.000 (Bs 571.200)');
+ el('text',{x:left-10,y:104,'text-anchor':'end',class:'lab'},svg,'Equipo propio');
+ const a=el('rect',{x:left,y:86,width:X(890675)-left,height:28,rx:4,fill:'var(--mark)',class:'hbar',style:'animation-delay:120ms'},svg);el('text',{x:X(890675)+8,y:105,class:'val'},svg,'Bs 0,89 M');hover(a,'Equipo propio: Bs 890.675');
+ el('text',{x:left-10,y:156,'text-anchor':'end',class:'lab'},svg,'Fábrica de software');
+ const b=el('rect',{x:left,y:138,width:X(1200000)-left,height:28,rx:4,fill:'var(--mark)',class:'hbar',style:'animation-delay:240ms'},svg);
+ el('line',{x1:X(1200000),x2:X(1440000),y1:152,y2:152,stroke:'var(--ink-2)','stroke-width':2},svg);el('line',{x1:X(1440000),x2:X(1440000),y1:144,y2:160,stroke:'var(--ink-2)','stroke-width':2},svg);
+ el('text',{x:X(1440000)+8,y:157,class:'val'},svg,'Bs 1,2–1,44 M');hover(b,'Fábrica: Bs 1,2 a 1,44 M');
+ el('text',{x:left,y:228,class:'lab'},svg,'millones de Bs');
 })();
 
 /* gantt */
 (function(){
- const svg=$('#gantt');const left=230,right=940,top=44,rowH=30,X=w=>left+w/24*(right-left);
- const R=[['Descubrimiento y diseño UX',0,4,'s3'],['Infra base, CI/CD y seguridad',0,6,'s2'],['Registro y KYC',2,8,'s1'],['Niveles y motor de riesgo',4,10,'s1'],['Compras y app del comercio',4,12,'s1'],['App del cliente',2,12,'s1'],['Cuotas y cobros QR (banco)',6,14,'s1'],['Cobranza y WhatsApp',10,14,'s1'],['Liquidación a comercios',10,16,'s1'],['Panel interno',8,16,'s1'],['QA y pruebas de carga',12,18,'s3'],['Piloto con 10 comercios',14,18,'s3'],['Pentest y entorno de pruebas ASFI',18,24,'s2']];
- for(let s=0;s<12;s++){const x=X(s*2);if(s%2===0)el('rect',{x,y:top-6,width:X(2)-X(0),height:R.length*rowH+10,fill:'var(--grid)'},svg);el('text',{x:x+(X(2)-X(0))/2,y:top-14,'text-anchor':'middle',class:'lab','font-size':11},svg,'S'+(s+1))}
- [['Mes 1–3: MVP',0,12],['Mes 4–6: piloto y endurecimiento',12,24]].forEach(([t,a,b])=>{el('text',{x:(X(a)+X(b))/2,y:16,'text-anchor':'middle','font-size':12,'font-weight':600,fill:'var(--ink)'},svg,t)});
- el('line',{x1:X(12),x2:X(12),y1:6,y2:top+R.length*rowH,stroke:'var(--sun)','stroke-dasharray':'4 4'},svg);
+ const svg=$('#gantt');const left=230,right=940,top=44,rowH=30,X=w=>left+w/32*(right-left);
+ const R=[['Descubrimiento y diseño UX',0,6,'s3'],['Infra base, CI/CD y seguridad',0,8,'s2'],['Registro y KYC',2,10,'s1'],['Niveles y motor de riesgo',6,14,'s1'],['Compras y app del comercio',6,16,'s1'],['App del cliente',2,16,'s1'],['Cuotas y cobros QR (banco)',8,18,'s1'],['Cobranza y WhatsApp',12,18,'s1'],['Liquidación a comercios',12,20,'s1'],['Panel interno',10,20,'s1'],['QA y pruebas de carga',16,24,'s3'],['Piloto con 10 comercios',18,24,'s3'],['Pentest y entorno de pruebas ASFI',24,32,'s2']];
+ for(let s=0;s<16;s++){const x=X(s*2);if(s%2===0)el('rect',{x,y:top-6,width:X(2)-X(0),height:R.length*rowH+10,fill:'var(--grid)'},svg);el('text',{x:x+(X(2)-X(0))/2,y:top-14,'text-anchor':'middle',class:'lab','font-size':11},svg,'S'+(s+1))}
+ [['Mes 1–4: MVP',0,16],['Mes 5–8: piloto y endurecimiento',16,32]].forEach(([t,a,b])=>{el('text',{x:(X(a)+X(b))/2,y:16,'text-anchor':'middle','font-size':12,'font-weight':600,fill:'var(--ink)'},svg,t)});
+ el('line',{x1:X(16),x2:X(16),y1:6,y2:top+R.length*rowH,stroke:'var(--sun)','stroke-dasharray':'4 4'},svg);
  R.forEach(([t,a,b,c],i)=>{const y=top+i*rowH;el('text',{x:left-12,y:y+rowH/2+2,'text-anchor':'end',class:'lab'},svg,t);
   const r=el('rect',{x:X(a)+1,y:y+6,width:X(b)-X(a)-2,height:rowH-14,rx:5,fill:`var(--${c})`,class:'hbar',style:`animation-delay:${i*60}ms`},svg);
   hover(r,`<b>${t}</b><br>Sprints ${a/2+1} a ${b/2} · semanas ${a+1} a ${b}`)});
- const ly=top+R.length*rowH+30;const mx=X(14);el('path',{d:`M${mx} ${ly-8}l8 8l-8 8l-8 -8z`,fill:'var(--sun)'},svg);el('text',{x:mx+14,y:ly+4,'font-size':12,fill:'var(--ink)'},svg,'Piloto en Santa Cruz (mes 4)');
- const lx=X(24);el('path',{d:`M${lx-8} ${ly+18}l8 8l-8 8l-8 -8z`,fill:'var(--accent)'},svg);el('text',{x:lx-22,y:ly+30,'text-anchor':'end','font-size':12,fill:'var(--ink)'},svg,'Producción lista para escalar (mes 6)');
+ const ly=top+R.length*rowH+30;const mx=X(18);el('path',{d:`M${mx} ${ly-8}l8 8l-8 8l-8 -8z`,fill:'var(--sun)'},svg);el('text',{x:mx+14,y:ly+4,'font-size':12,fill:'var(--ink)'},svg,'Piloto en Santa Cruz (mes 5)');
+ const lx=X(32);el('path',{d:`M${lx-8} ${ly+18}l8 8l-8 8l-8 -8z`,fill:'var(--accent)'},svg);el('text',{x:lx-22,y:ly+30,'text-anchor':'end','font-size':12,fill:'var(--ink)'},svg,'Producción lista para escalar (mes 8)');
 })();
 
 /* tech run cost: stacked bars per year */
@@ -226,7 +228,7 @@ hbars('effort',[{k:'App del cliente',v:12},{k:'Cuotas y cobros QR',v:10},{k:'QA 
 
 /* annual */
 (function(){
- const svg=$('#annual');const R=[['Año 1',-2.94],['Año 2',-0.17],['Año 3',9.92]];const left=44,right=500,top=24,bot=200,lo=-4,hi=11,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/3;
+ const svg=$('#annual');const R=[['Año 1',-2.53],['Año 2',-0.69],['Año 3',8.93]];const left=44,right=500,top=24,bot=200,lo=-4,hi=11,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/3;
  [-4,0,4,8].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-8,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
  R.forEach(([k,v],i)=>{const x=left+i*bw+bw*.28,w=bw*.44,p=v>=0;const b=el('rect',{x,y:p?Y(v):Y(0),width:w,height:Math.max(2,Math.abs(Y(v)-Y(0))),rx:4,fill:p?'var(--s1)':'var(--mark)',class:'bar'+(p?'':' neg'),style:`animation-delay:${i*140}ms`},svg);
   el('text',{x:x+w/2,y:p?Y(v)-8:Y(v)+16,'text-anchor':'middle',class:'val'},svg,(v>0?'+':'')+fmt(v,2));el('text',{x:x+w/2,y:bot+30,'text-anchor':'middle',class:'lab'},svg,k);hover(b,`<b>${k}</b><br>Bs ${fmt(v,2)} M`)});
@@ -234,8 +236,8 @@ hbars('effort',[{k:'App del cliente',v:12},{k:'Cuotas y cobros QR',v:10},{k:'QA 
 
 /* cash line with crosshair */
 (function(){
- const caja=[-0.35,-0.51,-0.67,-0.98,-1.47,-1.98,-2.60,-3.23,-3.88,-4.55,-5.24,-5.94,-6.69,-7.22,-7.72,-8.19,-8.62,-9.01,-9.37,-9.68,-9.95,-10.17,-10.34,-10.46,-11.09,-11.04,-10.92,-10.73,-10.47,-10.14,-9.73,-9.25,-8.68,-8.04,-7.32,-6.52];
- const res=[-0.35,-0.16,-0.16,-0.25,-0.25,-0.24,-0.30,-0.28,-0.27,-0.25,-0.23,-0.21,-0.36,-0.24,-0.20,-0.15,-0.10,-0.05,0.01,0.06,0.12,0.18,0.25,0.31,0.29,0.47,0.55,0.62,0.70,0.79,0.87,0.95,1.04,1.13,1.21,1.30];
+ const caja=[-0.28,-0.37,-0.46,-0.55,-0.79,-1.21,-1.65,-2.39,-3.02,-3.67,-4.34,-5.03,-5.73,-6.48,-7.01,-7.51,-7.98,-8.41,-8.80,-9.16,-9.47,-9.74,-9.96,-10.13,-10.25,-10.88,-10.83,-10.71,-10.52,-10.26,-9.93,-9.52,-9.04,-8.47,-7.83,-7.11];
+ const res=[-0.28,-0.09,-0.09,-0.09,-0.18,-0.18,-0.17,-0.42,-0.28,-0.27,-0.25,-0.23,-0.21,-0.36,-0.24,-0.20,-0.15,-0.10,-0.05,0.01,0.06,0.12,0.18,0.25,0.31,0.29,0.47,0.55,0.62,0.70,0.79,0.87,0.95,1.04,1.13,1.21];
  const svg=$('#cash');const left=56,right=940,top=24,bot=280,X=m=>left+(m-1)/35*(right-left),Y=v=>top+(-v)/12*(bot-top);
  const defs=el('defs',{},svg);const gr=el('linearGradient',{id:'cg',x1:0,x2:0,y1:0,y2:1},defs);el('stop',{offset:'0','stop-color':'var(--accent)','stop-opacity':.02},gr);el('stop',{offset:'1','stop-color':'var(--accent)','stop-opacity':.22},gr);
  [0,-3,-6,-9,-12].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
