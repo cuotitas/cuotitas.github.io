@@ -30,6 +30,7 @@ const log=$('#log');
 const evs=[
  ['POST','/v1/orders           ','201','ok',()=>`${60+Math.floor(Math.random()*60)}ms  Bs ${fmt(300+Math.floor(Math.random()*40)*100)}`],
  ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} nivel ${1+Math.floor(Math.random()*5)}  `,'aprobado','ok',()=>`inicial ${[50,45,40,30,25][Math.floor(Math.random()*5)]}%`],
+ ['POST','/v1/marketplace/orders','201','ok',()=>`app · +3% · Bs ${fmt(200+Math.floor(Math.random()*30)*100)}`],
  ['HOOK','bank.qr.paid         ','200','ok',()=>`Bs ${fmt(100+Math.random()*900,2)}`],
  ['JOB ','cuotas.crear         ','3 cuotas','ok',()=>'d14 d28 d42'],
  ['WS  ','caja.orden.aprobada  ','enviado','ok',()=>''],
@@ -54,9 +55,9 @@ if(!reduce)document.querySelectorAll('[data-count]').forEach(countUp);
 /* simulator: two credit lines */
 const L2={1:[.50,500,3],2:[.45,1000,3],3:[.40,2000,4],4:[.30,4000,6],5:[.25,6000,6]};
 const L1={1:300,2:500,3:800,4:1200,5:1500};
-let lv=1,ln=2,po='m';const pr=$('#precio');
+let lv=1,ln=2,po='m',or='t';const pr=$('#precio');
 function sim(){const p=+pr.value;let ip,lin,n,cr;
-  if(ln===1){ip=0;lin=L1[lv];n=1}else{[ip,lin,n]=L2[lv]}cr=po==='m'?.04:.08;
+  if(ln===1){ip=0;lin=L1[lv];n=1}else{[ip,lin,n]=L2[lv]}cr=(po==='m'?.04:.08)+(or==='a'?.03:0);
   const ini=Math.round(p*ip*100)/100,fin=Math.round((p-ini)*100)/100,cu=Math.round(fin/n*100)/100,com=Math.round(p*cr*100)/100;
   $('#precioTxt').textContent=bs(p);$('#iniTxt').textContent=bs(ini);$('#cuTxt').textContent=bs(cu);$('#lineaTxt').textContent=bs(lin);$('#finTxt').textContent=bs(fin);$('#comTxt').textContent=bs(com);$('#netTxt').textContent=bs(Math.max(0,fin-com));
   $('#comLab').textContent='Comisión al comercio ('+Math.round(cr*100)+'%)';$('#netLab').textContent='Cuotitas paga al comercio '+(po==='m'?'a fin de mes':'el día 7');
@@ -67,6 +68,7 @@ pr.addEventListener('input',sim);
 document.querySelectorAll('[data-l]').forEach(b=>b.addEventListener('click',()=>{lv=+b.dataset.l;document.querySelectorAll('[data-l]').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
 document.querySelectorAll('[data-ln]').forEach(b=>b.addEventListener('click',()=>{ln=+b.dataset.ln;document.querySelectorAll('[data-ln]').forEach(x=>x.setAttribute('aria-pressed',x===b));if(ln===1&&+pr.value>1500)pr.value=300;sim()}));
 document.querySelectorAll('[data-po]').forEach(b=>b.addEventListener('click',()=>{po=b.dataset.po;document.querySelectorAll('[data-po]').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
+document.querySelectorAll('[data-or]').forEach(b=>b.addEventListener('click',()=>{or=b.dataset.or;document.querySelectorAll('[data-or]').forEach(x=>x.setAttribute('aria-pressed',x===b));sim()}));
 sim();
 
 /* ---------- architecture diagram with moving packets ---------- */
@@ -74,7 +76,7 @@ sim();
  const svg=$('#arch');
  const defs=el('defs',{},svg);const mk=el('marker',{id:'ar',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'},defs);el('path',{d:'M0 0L10 5L0 10z',fill:'var(--muted)'},mk);
  const N={
-  cli:{x:150,y:56,w:200,t:'App del cliente',s:'Flutter · Android/iOS',c:'s1'},
+  cli:{x:150,y:56,w:200,t:'App del cliente',s:'Flutter · marketplace',c:'s1'},
   caja:{x:480,y:56,w:200,t:'App del comercio',s:'Next.js PWA · WebSocket',c:'s1'},
   pan:{x:810,y:56,w:200,t:'Panel interno',s:'React · RBAC · auditoría',c:'s1'},
   edge:{x:480,y:160,w:300,t:'CloudFront + WAF',s:'TLS 1.3 · límites de tasa',c:'s2'},
@@ -156,7 +158,7 @@ sim();
 /* ---------- ERD ---------- */
 (function(){
  const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','numero','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
-  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
+  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
   liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','multas_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};
  Object.entries(T).forEach(([t,cols])=>{cols.forEach(c=>{const m=c.split('→')[1];if(m){(rel[t]=rel[t]||new Set()).add(m);(rel[m]=rel[m]||new Set()).add(t)}})});
