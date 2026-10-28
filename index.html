@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Cuotitas Bolivia</title>
+    <meta name="description" content="Cuotitas: paga a plazos, fácil y seguro. Plan técnico y de negocio.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<nav class="top" aria-label="Secciones"><div class="in">
+  <a class="brand" href="#inicio"><img src="logo.png" alt="" width="30" height="30">Cuotitas</a>
+  <div class="links">
+    <a href="#producto">Producto</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#stack">Stack</a>
+    <a href="#flujo">Flujo</a>
+    <a href="#datos">Datos</a>
+    <a href="#costo">Costo de desarrollo</a>
+    <a href="#mercado">Mercado</a>
+    <a href="#numeros">Números</a>
+  </div>
+  <button class="theme" id="theme" type="button" aria-label="Cambiar tema claro u oscuro">Tema</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="inicio">
+  <div class="copy">
+    <div class="lockup"><img src="logo.png" alt="Logo de Cuotitas" width="64" height="64"><div><b>Cuotitas</b><span>Paga a plazos, fácil y seguro</span></div></div>
+    <span class="eyebrow">Plan técnico y de negocio · Bolivia · 2026</span>
+    <h1>Crédito en cuotas, <span class="g">aprobado en 3 segundos</span> y cobrado por QR.</h1>
+    <p class="lead">Cuotitas es una app de "compra ahora, paga después" inspirada en Cashea. El cliente paga una inicial y el resto en 3 cuotas cada 14 días, sin intereses; el comercio paga una comisión y cobra al día siguiente. Esta página detalla cómo se construye, cuánto cuesta y cuándo da dinero.</p>
+    <div class="chips"><span class="chip">Flutter</span><span class="chip">NestJS · TypeScript</span><span class="chip">PostgreSQL 16</span><span class="chip">AWS São Paulo</span><span class="chip">QR interoperable</span><span class="chip">WhatsApp API</span></div>
+    <div class="kpis">
+      <div class="kpi"><b class="num" data-count="890" data-pre="Bs " data-suf=" mil">Bs 890 mil</b><span>desarrollo del MVP</span></div>
+      <div class="kpi"><b class="num">6 meses</b><span>hasta producción endurecida</span></div>
+      <div class="kpi"><b class="num" data-count="3360" data-suf=" h">3.360 h</b><span>de ingeniería estimadas</span></div>
+      <div class="kpi"><b class="num">Bs 12,8 M</b><span>capital total del plan</span></div>
+    </div>
+  </div>
+  <div class="console" aria-label="Simulación de eventos de la API de Cuotitas">
+    <div class="bar"><i></i><i></i><i></i><span>api.cuotitas.bo · simulación</span></div>
+    <pre id="log"><span class="dim">10:41:02</span> <span class="in">POST</span> /v1/orders            <span class="ok">201</span> 84ms  Bs 1.200
+<span class="dim">10:41:03</span> <span class="in">RISK</span> score usr_8f2 nivel 2   <span class="ok">aprobado</span> inicial 45%
+<span class="dim">10:41:05</span> <span class="in">HOOK</span> bank.qr.paid          <span class="ok">200</span> Bs 540,00
+<span class="dim">10:41:05</span> <span class="in">JOB </span> cuotas.crear ord_31c  <span class="ok">3 cuotas</span> d14 d28 d42
+<span class="dim">10:41:06</span> <span class="in">WS  </span> caja.orden.aprobada   <span class="ok">enviado</span>
+<span class="dim">10:41:09</span> <span class="in">JOB </span> recordatorio d-3      <span class="wa">142 mensajes</span> WhatsApp
+<span class="caret"></span></pre>
+    <div class="meter">
+      <div><small>Aprobación p95</small><b id="mLat">2,4 s</b></div>
+      <div><small>Órdenes/min</small><b id="mOps">38</b></div>
+      <div><small>Disponibilidad</small><b>99,9%</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTO -->
+<section id="producto">
+  <header class="rv">
+    <span class="eyebrow">Producto</span>
+    <h2>Una compra, cuatro pagos, cero intereses</h2>
+    <p class="lead">La inicial alta al empezar es el filtro de riesgo. Pagar a tiempo sube de nivel: baja la inicial y sube la línea. Prueba el simulador.</p>
+  </header>
+  <div class="card glow sim rv">
+    <div style="display:grid;gap:18px;align-content:start">
+      <div><label for="precio">Precio del producto: <b class="num" id="precioTxt">Bs 1.000</b></label>
+        <input id="precio" type="range" min="200" max="8000" step="100" value="1000"></div>
+      <div><label id="lvLab">Nivel del cliente</label>
+        <div class="seg" role="group" aria-labelledby="lvLab">
+          <button type="button" data-l="1" aria-pressed="true">N1</button><button type="button" data-l="2" aria-pressed="false">N2</button><button type="button" data-l="3" aria-pressed="false">N3</button><button type="button" data-l="4" aria-pressed="false">N4</button><button type="button" data-l="5" aria-pressed="false">N5</button>
+        </div></div>
+      <p class="note">N1: 50% de inicial y línea de Bs 500. N5: 25% y Bs 6.000. N2 a N4 son valores intermedios supuestos.</p>
+    </div>
+    <div style="display:grid;gap:14px;min-width:0" aria-live="polite">
+      <div class="split" aria-hidden="true"><div class="ini" id="bIni" style="flex-grow:3">Inicial</div><div class="cu" style="flex-grow:1">1</div><div class="cu" style="flex-grow:1">2</div><div class="cu" style="flex-grow:1">3</div></div>
+      <div class="cells">
+        <div class="cell"><span>Inicial hoy</span><b id="iniTxt">Bs 500</b></div>
+        <div class="cell"><span>Cada cuota (d14, d28, d42)</span><b id="cuTxt">Bs 166,67</b></div>
+        <div class="cell"><span>Línea del nivel</span><b id="lineaTxt">Bs 500</b></div>
+        <div class="cell"><span>Financia Cuotitas</span><b id="finTxt">Bs 500</b></div>
+        <div class="cell"><span>Comisión al comercio (7%)</span><b id="comTxt">Bs 70</b></div>
+        <div class="cell"><span>Cuotitas paga al comercio T+1</span><b id="netTxt">Bs 430</b></div>
+      </div>
+      <div class="status ok" id="estado"><i></i><span>Aprobado: dentro de la línea</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITECTURA -->
+<section id="arquitectura">
+  <header class="rv">
+    <span class="eyebrow">Arquitectura</span>
+    <h2>Tres clientes, un monolito modular y servicios externos detrás de colas</h2>
+    <p class="lead">Con un equipo de 6 a 8 ingenieros, un monolito modular en NestJS es más rápido de construir y operar que microservicios. Cada módulo (KYC, riesgo, órdenes, cuotas, cobranza, liquidación) tiene su propio esquema y se puede separar después si la carga lo pide.</p>
+  </header>
+  <div class="card rv">
+    <div class="scrollx"><svg class="diagram" id="arch" viewBox="0 0 960 470" role="img" aria-label="Arquitectura de Cuotitas: apps, borde, API, servicios y datos"></svg></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Producto</span><span><i style="background:var(--s2)"></i>Infraestructura y datos</span><span><i style="background:var(--s3)"></i>Externos</span><span class="note">Los puntos que se mueven representan solicitudes.</span></div>
+  </div>
+  <div class="grid3">
+    <div class="card glow rv"><h3>Objetivos de servicio</h3><ul class="clean"><li><b>99,9%</b> de disponibilidad mensual (43 min de caída máxima).</li><li>Aprobación de compra en <b>menos de 3 s</b> (p95).</li><li>Pago QR conciliado en <b>menos de 1 min</b>.</li></ul></div>
+    <div class="card glow rv"><h3>Escala prevista</h3><ul class="clean"><li>Año 3: unas <b>3.000 órdenes al día</b> y 43.000 usuarios activos.</li><li>Pico estimado: <b>5 órdenes por segundo</b>, holgado para 2 tareas Fargate.</li><li>PostgreSQL con réplica de lectura para reportes.</li></ul></div>
+    <div class="card glow rv"><h3>Seguridad y ASFI</h3><ul class="clean"><li>Cifrado AES-256 en reposo con KMS y TLS 1.3 en tránsito.</li><li>Registro de auditoría inmutable de cada decisión de crédito.</li><li>Pentest externo antes de lanzar y plan de continuidad.</li></ul></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <header class="rv">
+    <span class="eyebrow">Stack tecnológico</span>
+    <h2>Tecnologías probadas, fáciles de contratar en Bolivia</h2>
+  </header>
+  <div class="tabs" role="tablist" aria-label="Capas del stack" id="tabs"></div>
+  <div class="card tabpanel rv" role="tabpanel" id="tabpanel" aria-live="polite"></div>
+  <div class="grid2">
+    <div class="card rv"><h3>API principal (extracto)</h3>
+<pre class="code"><span class="c"># La caja crea la orden y muestra un QR</span>
+<span class="k">POST</span> /v1/orders
+{ <span class="s">"merchant_id"</span>: <span class="s">"mer_204"</span>, <span class="s">"amount_bs"</span>: <span class="n">1200.00</span> }
+→ <span class="n">201</span> { <span class="s">"order_id"</span>, <span class="s">"qr_payload"</span>, <span class="s">"expires_in"</span>: <span class="n">300</span> }
+
+<span class="c"># El cliente aprueba con biometría</span>
+<span class="k">POST</span> /v1/orders/{id}/approve
+→ <span class="n">200</span> { <span class="s">"down_payment_bs"</span>: <span class="n">540</span>, <span class="s">"installments"</span>: [<span class="n">220</span>, <span class="n">220</span>, <span class="n">220</span>] }
+
+<span class="c"># El banco confirma un pago QR (firma HMAC)</span>
+<span class="k">POST</span> /v1/webhooks/bank/qr-paid
+<span class="k">GET</span>  /v1/users/me/limits</pre></div>
+    <div class="card rv"><h3>Prácticas de ingeniería</h3>
+      <ul class="clean">
+        <li><b>Infraestructura como código</b> con Terraform; entornos dev, staging y producción idénticos.</li>
+        <li><b>CI/CD</b> en GitHub Actions: pruebas, análisis estático y despliegue azul-verde.</li>
+        <li><b>Idempotencia</b> en pagos y webhooks: una clave por operación evita cobros dobles.</li>
+        <li><b>Dinero en centavos enteros</b> y redondeo en la última cuota.</li>
+        <li><b>Observabilidad</b>: logs estructurados, métricas en Grafana, errores en Sentry, alertas a guardia.</li>
+        <li><b>Respaldos</b> diarios con 35 días de retención y prueba de restauración mensual.</li>
+      </ul></div>
+  </div>
+</section>
+
+<!-- FLUJO -->
+<section id="flujo">
+  <header class="rv">
+    <span class="eyebrow">Flujo de una compra</span>
+    <h2>De la caja a la tercera cuota en 9 mensajes</h2>
+    <p class="lead">La caja, la app del cliente y el banco hablan con la API. La API decide con el motor de riesgo y deja programadas las cuotas.</p>
+  </header>
+  <div class="card rv" style="gap:16px">
+    <button class="btn" id="seqPlay" type="button">▶ Reproducir el flujo</button>
+    <div class="scrollx"><svg class="diagram seq" id="seq" viewBox="0 0 960 520" role="img" aria-label="Diagrama de secuencia de una compra"></svg></div>
+  </div>
+  <div class="card rv">
+    <h3>Estados de una cuota</h3>
+    <div class="scrollx"><svg class="diagram" id="states" viewBox="0 0 960 230" role="img" aria-label="Estados de una cuota: programada, por vencer, pagada, vencida, en cobranza, castigada"></svg></div>
+    <p class="note">Al pasar a "vencida" la cuenta se congela y no puede comprar hasta pagar. Los días son supuestos del plan.</p>
+  </div>
+</section>
+
+<!-- DATOS -->
+<section id="datos">
+  <header class="rv">
+    <span class="eyebrow">Modelo de datos</span>
+    <h2>Ocho tablas sostienen el negocio</h2>
+    <p class="lead">Pasa el cursor sobre una tabla para ver con cuáles se relaciona. <span class="mono" style="color:var(--sun)">PK</span> es la clave primaria y <span class="mono" style="color:var(--cyan)">FK</span> una referencia a otra tabla.</p>
+  </header>
+  <div class="erd rv" id="erd"></div>
+</section>
+
+<!-- COSTO -->
+<section id="costo">
+  <header class="rv">
+    <span class="eyebrow">Costo de desarrollo</span>
+    <h2>Bs 890 mil para tener la plataforma en producción en 6 meses</h2>
+    <p class="lead">Con equipo propio en Santa Cruz: 3 meses de MVP y 3 de piloto, endurecimiento y prueba de seguridad. Equivale a unos US$ 75.000 y ya está incluido en el capital total de Bs 12,8 M.</p>
+  </header>
+  <div class="grid2">
+    <div class="card rv">
+      <h3>En qué se va el dinero</h3>
+      <svg class="chart" id="devcost" viewBox="0 0 520 330" role="img" aria-label="Costo de desarrollo por rubro"></svg>
+      <p class="note">Azul: equipo; turquesa: infraestructura y seguridad; verde: otros gastos; gris: contingencia. Bs, 6 meses. Equipo con 25% de cargas sociales y aguinaldo. Contingencia de 15% sobre el total.</p>
+    </div>
+    <div class="card rv">
+      <h3>Esfuerzo por módulo: 84 semanas-persona</h3>
+      <svg class="chart" id="effort" viewBox="0 0 520 330" role="img" aria-label="Semanas-persona por módulo"></svg>
+      <p class="note">1 semana-persona = 40 horas. Total 3.360 horas.</p>
+    </div>
+  </div>
+  <div class="card rv">
+    <h3>Plan de 12 sprints de 2 semanas</h3>
+    <div class="scrollx"><svg class="diagram" id="gantt" viewBox="0 0 960 500" role="img" aria-label="Cronograma de desarrollo en 12 sprints"></svg></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Producto</span><span><i style="background:var(--s2)"></i>Infraestructura y seguridad</span><span><i style="background:var(--s3)"></i>Calidad y piloto</span></div>
+  </div>
+  <div class="grid2">
+    <div class="tbl rv"><table>
+      <thead><tr><th>Equipo de desarrollo</th><th class="r">Bs/mes bruto</th><th class="r">Meses</th><th class="r">Costo total</th></tr></thead>
+      <tbody>
+        <tr><td>CTO / arquitecto</td><td class="r">18.000</td><td class="r">6</td><td class="r">135.000</td></tr>
+        <tr><td>Backend senior</td><td class="r">14.000</td><td class="r">6</td><td class="r">105.000</td></tr>
+        <tr><td>Desarrollador Flutter</td><td class="r">12.000</td><td class="r">6</td><td class="r">90.000</td></tr>
+        <tr><td>Backend semi-senior</td><td class="r">10.000</td><td class="r">6</td><td class="r">75.000</td></tr>
+        <tr><td>Desarrollador web (React)</td><td class="r">10.000</td><td class="r">6</td><td class="r">75.000</td></tr>
+        <tr><td>QA / pruebas</td><td class="r">7.000</td><td class="r">6</td><td class="r">52.500</td></tr>
+        <tr><td>Diseño UX/UI (freelance)</td><td class="r">8.000</td><td class="r">3</td><td class="r">24.000</td></tr>
+        <tr><td>DevOps y seguridad (medio tiempo)</td><td class="r">7.000</td><td class="r">6</td><td class="r">42.000</td></tr>
+        <tr class="tot"><td>Total personas</td><td class="r"></td><td class="r"></td><td class="r">598.500</td></tr>
+      </tbody></table></div>
+    <div class="card rv">
+      <h3>Equipo propio o fábrica de software</h3>
+      <svg class="chart" id="vs" viewBox="0 0 520 190" role="img" aria-label="Comparación de costo entre equipo propio y fábrica de software"></svg>
+      <p class="note">Fábrica: 3.360 h a US$ 30/h más 20% de gestión de proyecto (rango de US$ 100.000 a 121.000). Estimación propia.</p>
+      <p style="color:var(--ink-2);font-size:15px">Recomiendo <b style="color:var(--ink)">equipo propio</b>: el scoring, la cobranza y las integraciones bancarias son el corazón del negocio y conviene que el conocimiento quede en la empresa. Una fábrica sirve para acelerar piezas acotadas, como el panel interno.</p>
+    </div>
+  </div>
+  <div class="card rv">
+    <h3>Costo de tecnología en operación</h3>
+    <svg class="chart" id="techrun" viewBox="0 0 960 260" role="img" aria-label="Costo anual de tecnología: nube fija y servicios por uso"></svg>
+    <p class="note">Millones de Bs por año. Servicios por uso: verificación de identidad y buró (Bs 8 por usuario nuevo), WhatsApp y SMS (Bs 1,5 por usuario activo al mes) y procesamiento de pagos (0,3% de las ventas).</p>
+  </div>
+</section>
+
+<!-- MERCADO Y NEGOCIO -->
+<section id="mercado">
+  <header class="rv">
+    <span class="eyebrow">Mercado y modelo</span>
+    <h2>El QR ya está en todas partes; la tarjeta de crédito no</h2>
+    <p class="lead">Cashea llegó a 10 millones de usuarios y 40.000 comercios en Venezuela desde 2022. En Bolivia, 3,7 millones de personas ya pagan con QR, el dólar pasó de Bs 6,96 a Bs 11,92 y lo importado se encareció.</p>
+  </header>
+  <div class="grid4">
+    <div class="card glow stat rv"><b class="num">11,3 M</b><span>habitantes; Santa Cruz es la ciudad más grande</span></div>
+    <div class="card glow stat rv"><b class="num">891 M</b><span>pagos QR en 2025, el doble que en 2024</span></div>
+    <div class="card glow stat rv"><b class="num">36%</b><span>de los pagos ya son QR (15% en 2020)</span></div>
+    <div class="card glow stat rv"><b class="num">US$ 100 M</b><span>levantó Cashea en agosto de 2026</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card rv">
+      <h3>Bs 45 de margen por cada Bs 1.000 vendidos</h3>
+      <svg class="chart" id="water" viewBox="0 0 520 280" role="img" aria-label="De Bs 70 de comisión quedan Bs 45"></svg>
+      <p class="note">Compra de Bs 1.000 en nivel 1, comisión de 7%. Verde suma, rojo resta, gris es el resultado.</p>
+    </div>
+    <div class="card rv" style="align-content:start">
+      <h3>Competencia</h3>
+      <div class="tbl" style="border:0"><table>
+        <thead><tr><th>Quién</th><th>Diferencia con Cuotitas</th></tr></thead>
+        <tbody>
+          <tr><td><b>Presto</b></td><td>Tarjeta Visa con BNB y requisito de ingresos; Cuotitas es solo app y QR</td></tr>
+          <tr><td><b>Bankame</b></td><td>Crédito digital de escala chica, sin red de comercios</td></tr>
+          <tr><td><b>Bancos</b></td><td>Piden historial y papeles</td></tr>
+          <tr><td><b>Tiendas</b></td><td>Crédito que sirve en una sola tienda</td></tr>
+        </tbody></table></div>
+      <div class="callout"><b>Riesgo principal: licencia de ASFI</b><p>El reglamento fintech de 2025 permite "plataformas de financiamiento" pero no nombra el "compra ahora, paga después". Hay que confirmarlo con un abogado antes de invertir.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<section id="numeros">
+  <header class="rv">
+    <span class="eyebrow">Proyección a 3 años</span>
+    <h2>Hasta Bs 11,1 M antes de generar caja; ganancia operativa desde el mes 19</h2>
+    <p class="lead">Unos Bs 8 M del capital quedan prestados en la cartera y vuelven. Con 15% de colchón, la meta es levantar Bs 12,8 M: semilla de Bs 6 M y Serie A de Bs 7 M, más deuda para la cartera desde el año 2.</p>
+  </header>
+  <div class="card rv">
+    <svg class="chart" id="cash" viewBox="0 0 960 330" role="img" aria-label="Caja acumulada: mínimo de Bs 11,1 M en el mes 25"></svg>
+    <p class="note">Caja acumulada por mes, millones de Bs, incluida la parte de la cartera pagada con capital propio. Pasa el cursor para ver cada mes. Escenario base, estimación propia.</p>
+  </div>
+  <div class="grid2">
+    <div class="card rv"><h3>Resultado operativo por año</h3>
+      <svg class="chart" id="annual" viewBox="0 0 520 250" role="img" aria-label="Resultado operativo: -2,94, -0,17 y 9,92 millones de Bs"></svg>
+      <p class="note">Millones de Bs, antes del impuesto a las utilidades (25%).</p></div>
+    <div class="tbl rv"><table>
+      <thead><tr><th>Millones de Bs</th><th class="r">Año 1</th><th class="r">Año 2</th><th class="r">Año 3</th></tr></thead>
+      <tbody>
+        <tr><td>Comercios al cierre</td><td class="r">300</td><td class="r">900</td><td class="r">1.500</td></tr>
+        <tr><td>Usuarios activos</td><td class="r">5.400</td><td class="r">22.500</td><td class="r">42.900</td></tr>
+        <tr><td>Ventas con Cuotitas</td><td class="r">24,5</td><td class="r">187,3</td><td class="r">445,8</td></tr>
+        <tr><td>Ingresos netos</td><td class="r">1,13</td><td class="r">11,01</td><td class="r">29,96</td></tr>
+        <tr><td>Pérdidas por impago</td><td class="r">0,49</td><td class="r">3,09</td><td class="r">6,69</td></tr>
+        <tr><td>Sueldos con cargas</td><td class="r">2,19</td><td class="r">3,68</td><td class="r">5,47</td></tr>
+        <tr><td>Marketing</td><td class="r">0,60</td><td class="r">1,80</td><td class="r">2,64</td></tr>
+        <tr><td>Personal</td><td class="r">18</td><td class="r">28</td><td class="r">41</td></tr>
+      </tbody></table></div>
+  </div>
+  <div class="road">
+    <div class="card phase rv"><span class="when">Meses 1 a 3</span><h3>Construir</h3><ul><li>Sociedad y trámite ASFI</li><li>MVP de las 3 apps</li><li>10 comercios piloto</li></ul></div>
+    <div class="card phase now rv"><span class="when">Meses 4 a 12</span><h3>Lanzar en Santa Cruz</h3><ul><li>Piloto en el mes 4</li><li>Hasta 300 comercios</li><li>Ventas y redes</li></ul></div>
+    <div class="card phase rv"><span class="when">Año 2</span><h3>Crecer</h3><ul><li>La Paz y El Alto</li><li>Membresía y vitrina</li><li>Deuda para cartera</li></ul></div>
+    <div class="card phase rv"><span class="when">Año 3</span><h3>Ampliar</h3><ul><li>Cochabamba</li><li>Compras online</li><li>Cuotas a 6 meses</li></ul></div>
+  </div>
+  <div class="gatebar">
+    <div><i></i><span><b>Meta 1:</b> piloto con 200 compras y mora bajo 5%</span></div>
+    <div><i></i><span><b>Meta 2:</b> 300 comercios y pérdida bajo 3%</span></div>
+    <div><i></i><span><b>Meta 3:</b> equilibrio mensual</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="lockup" style="margin-bottom:10px"><img src="logo.png" alt="" width="40" height="40" style="width:40px;height:40px"><div><b style="font-size:22px">Cuotitas</b><span>Paga a plazos, fácil y seguro</span></div></div>
+  <b style="color:var(--ink)">Fuentes</b>
+  <ol>
+    <li><a href="https://www.forbesargentina.com/negocios/como-cashea-logro-levantar-us-100-millones-reconstruir-credito-consumo-venezuela-n95117">Forbes Argentina: Cashea levanta US$ 100 millones</a> · <a href="https://eldiario.com/2025/10/15/cashea-que-se-sabe-cambios-en-las-condiciones-de-compra/">El Diario: niveles de Cashea</a></li>
+    <li><a href="https://cpv2024.ine.gob.bo/index.php/somos-11-312-620-bolivianos-y-santa-cruz-es-el-departamento-que-mas-crecio-y-mas-poblado/?pdf=19626">INE: censo 2024</a></li>
+    <li><a href="https://www.lostiempos.com/actualidad/economia/20260614/banco-central-bolivia-resalta-uso-del-qr-28-veces-segundo-pais">Los Tiempos: uso del QR</a> · <a href="https://www.lostiempos.com/actualidad/economia/20260504/2025-se-duplico-uso-del-qr-paso-us-22547-millones-51293-millones">pagos QR 2025</a></li>
+    <li><a href="https://eju.tv/?p=5078690">eju.tv: el dólar en 2026</a></li>
+    <li><a href="https://asfi.gob.bo/sites/default/files/2025-07/Empresas%20de%20tecnolog%C3%ADa%20financiera%20en%20Bolivia%20Un%20nuevo%20horizonte%20para%20la%20innovaci%C3%B3n%20financiera.pdf">ASFI: empresas de tecnología financiera</a> · <a href="https://www.latamfintech.co/articles/descubre-como-la-fintech-boliviana-presto-esta-transformando-el-acceso-al-credito-con-su-tarjeta-bnpl">Latam Fintech: Presto</a></li>
+    <li><a href="https://www.getontop.com/payroll-in/bolivia">Ontop: cargas sociales en Bolivia</a> · <a href="https://www.bloomberglinea.com/latinoamerica/bolivia/rodrigo-paz-aumenta-un-20-el-salario-minimo-en-bolivia/">Bloomberg Línea: salario mínimo 2026</a></li>
+  </ol>
+  <p>Costos de desarrollo, sueldos, tarifas y proyecciones son estimaciones del plan, no cotizaciones. La consola del inicio es una simulación. Tipo de cambio de referencia: Bs 11,9 por US$.</p>
+</footer>
+</main>
+<div class="tip" id="tip" role="status"></div>
+<script src="index.js"></script>
+</body>
+</html>
