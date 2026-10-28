@@ -242,3 +242,4 @@ footer ol{margin:0;padding-left:18px;display:grid;gap:4px}
   section{padding-block:56px}
   .console pre{height:240px;font-size:11.5px}
 }
+@media (max-width:600px){.minitbl{display:block;max-width:100%;overflow-x:auto}.minitbl th,.minitbl td{padding-left:4px;padding-right:4px;font-size:11.5px}}

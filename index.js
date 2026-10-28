@@ -29,13 +29,13 @@ document.querySelectorAll('.card.glow').forEach(c=>c.addEventListener('pointermo
 const log=$('#log');
 const evs=[
  ['POST','/v1/orders           ','201','ok',()=>`${60+Math.floor(Math.random()*60)}ms  Bs ${fmt(300+Math.floor(Math.random()*40)*100)}`],
- ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} nivel ${1+Math.floor(Math.random()*5)}  `,'aprobado','ok',()=>`inicial ${[50,45,40,30,25][Math.floor(Math.random()*5)]}%`],
+ ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} ${['Bronce','Plata','Oro','Platino','Diamante'][Math.floor(Math.random()*5)]}  `,'aprobado','ok',()=>`inicial ${[50,45,40,30,25][Math.floor(Math.random()*5)]}%`],
  ['POST','/v1/marketplace/orders','201','ok',()=>`app · +3% · Bs ${fmt(200+Math.floor(Math.random()*30)*100)}`],
  ['HOOK','bank.qr.paid         ','200','ok',()=>`Bs ${fmt(100+Math.random()*900,2)}`],
  ['JOB ','cuotas.crear         ','3 cuotas','ok',()=>'d14 d28 d42'],
  ['WS  ','caja.orden.aprobada  ','enviado','ok',()=>''],
  ['JOB ','liquidacion.dia7     ','Bs '+fmt(48210),'ok',()=>'12 comercios · 8%'],
- ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} nivel 1  `,'rechazado','wa',()=>'supera la línea'],
+ ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} Bronce  `,'rechazado','wa',()=>'supera la línea'],
  ['JOB ','cuota.vencida        ','congelada','wa',()=>'L1 y L2 en pausa'],
  ['JOB ','cuota.multa          ','Bs 50','wa',()=>'gracia vencida · al comercio'],
  ['RISK',()=>`farmacia usr_${Math.random().toString(16).slice(2,5)} L1  `,'aprobado','ok',()=>`1 cuota d14 Bs ${fmt(20+Math.floor(Math.random()*180))}`]];
@@ -157,7 +157,7 @@ sim();
 
 /* ---------- ERD ---------- */
 (function(){
- const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','numero','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
+ const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','nombre (Bronce…Diamante)','limite_l1_bs','limite_l2_bs','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
   ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
   liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','multas_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};
