@@ -179,14 +179,22 @@
 <span class="c"># En farmacia o súper la orden usa L1:</span>
 → <span class="n">200</span> { <span class="s">"line"</span>: <span class="s">"L1"</span>, <span class="s">"down_payment_bs"</span>: <span class="n">0</span>, <span class="s">"installments"</span>: [<span class="n">85.50</span>] }
 
-<span class="c"># El banco confirma un pago QR (firma HMAC)</span>
+<span class="c"># El comercio reenvía el callback de su banco y Cuotitas amortiza la cuota</span>
+<span class="k">POST</span> /v1/webhooks/merchant/payment
+X-Cuotitas-Signature: hmac-sha256(secreto_del_comercio, cuerpo)
+Idempotency-Key: ref_banco
+{ <span class="s">"merchant_id"</span>, <span class="s">"bank_ref"</span>, <span class="s">"order_id"</span>, <span class="s">"amount_bs"</span>: <span class="n">220.00</span>, <span class="s">"paid_at"</span> }
+→ <span class="n">200</span> { <span class="s">"applied"</span>: [{ <span class="s">"installment"</span>: <span class="n">2</span>, <span class="s">"amount_bs"</span>: <span class="n">220</span> }], <span class="s">"pending_bs"</span>: <span class="n">220</span> }
+
+<span class="c"># El banco aliado también puede avisar directo (firma HMAC)</span>
 <span class="k">POST</span> /v1/webhooks/bank/qr-paid
 <span class="k">GET</span>  /v1/users/me/limits</pre></div>
     <div class="card rv"><h3>Prácticas de ingeniería</h3>
       <ul class="clean">
         <li><b>Infraestructura como código</b> con Terraform; entornos dev, staging y producción idénticos.</li>
         <li><b>CI/CD</b> en GitHub Actions: pruebas, análisis estático y despliegue azul-verde.</li>
-        <li><b>Idempotencia</b> en pagos y webhooks: una clave por operación evita cobros dobles.</li>
+        <li><b>Idempotencia</b> en pagos y webhooks: la referencia del banco es la clave, así un callback reenviado dos veces no amortiza dos veces.</li>
+        <li><b>Integración con el comercio</b>: cada comercio firma con su propio secreto; Cuotitas verifica la firma y confirma el pago con el banco antes de amortizar.</li>
         <li><b>Dinero en centavos enteros</b> y redondeo en la última cuota.</li>
         <li><b>Observabilidad</b>: logs estructurados, métricas en Grafana, errores en Sentry, alertas a guardia.</li>
         <li><b>Respaldos</b> diarios con 35 días de retención y prueba de restauración mensual.</li>
@@ -203,7 +211,7 @@
   </header>
   <div class="card rv" style="gap:16px">
     <button class="btn" id="seqPlay" type="button">▶ Reproducir el flujo</button>
-    <div class="scrollx"><svg class="diagram seq" id="seq" viewBox="0 0 960 520" role="img" aria-label="Diagrama de secuencia de una compra"></svg></div>
+    <div class="scrollx"><svg class="diagram seq" id="seq" viewBox="0 0 960 615" role="img" aria-label="Diagrama de secuencia de una compra"></svg></div>
   </div>
   <div class="card rv">
     <h3>Estados de una cuota</h3>

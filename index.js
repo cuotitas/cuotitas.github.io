@@ -32,6 +32,7 @@ const evs=[
  ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} ${['Bronce','Plata','Oro','Platino','Diamante'][Math.floor(Math.random()*5)]}  `,'aprobado','ok',()=>`inicial ${[50,45,40,30,25][Math.floor(Math.random()*5)]}%`],
  ['POST','/v1/marketplace/orders','201','ok',()=>`app · +3% · Bs ${fmt(200+Math.floor(Math.random()*30)*100)}`],
  ['HOOK','bank.qr.paid         ','200','ok',()=>`Bs ${fmt(100+Math.random()*900,2)}`],
+ ['HOOK','merchant.payment     ','200','ok',()=>`cuota ${1+Math.floor(Math.random()*3)}/3 amortizada · Bs ${fmt(80+Math.random()*300,2)}`],
  ['JOB ','cuotas.crear         ','3 cuotas','ok',()=>'d14 d28 d42'],
  ['WS  ','caja.orden.aprobada  ','enviado','ok',()=>''],
  ['JOB ','liquidacion.dia7     ','Bs '+fmt(48210),'ok',()=>'12 comercios · 8%'],
@@ -81,7 +82,7 @@ sim();
   pan:{x:810,y:56,w:200,t:'Panel interno',s:'React · RBAC · auditoría',c:'s1'},
   edge:{x:480,y:160,w:300,t:'CloudFront + WAF',s:'TLS 1.3 · límites de tasa',c:'s2'},
   api:{x:480,y:268,w:300,t:'API Cuotitas (NestJS)',s:'KYC · riesgo · órdenes · cuotas · cobranza · liquidación',c:'s1',main:true},
-  bank:{x:120,y:268,w:180,t:'Banco aliado',s:'QR, webhooks, pagos',c:'s3'},
+  bank:{x:120,y:268,w:180,t:'Banco aliado',s:'QR y callbacks',c:'s3'},
   work:{x:840,y:268,w:180,t:'Workers + SQS',s:'vencimientos, avisos',c:'s2'},
   kyc:{x:100,y:400,w:160,t:'KYC e Infocred',s:'identidad, buró',c:'s3'},
   pg:{x:290,y:400,w:160,t:'PostgreSQL 16',s:'RDS Multi-AZ',c:'s2'},
@@ -91,7 +92,7 @@ sim();
  const H=54;
  const E=[['cli','edge','M150 83 V120 H420 V133'],['caja','edge','M480 83 V133'],['pan','edge','M810 83 V120 H540 V133'],['edge','api','M480 187 V241'],
   ['api','bank','M330 268 H210'],['bank','api','M210 280 H330'],['api','work','M630 268 H750'],['work','wa','M860 295 V373'],
-  ['api','pg','M400 295 V340 H290 V373'],['api','rd','M480 295 V373'],['api','s3','M560 295 V340 H670 V373'],['api','kyc','M360 295 V320 H100 V373'],['cli','bank','M80 83 V241']];
+  ['api','pg','M400 295 V340 H290 V373'],['api','rd','M480 295 V373'],['api','s3','M560 295 V340 H670 V373'],['api','kyc','M360 295 V320 H100 V373'],['cli','bank','M80 83 V241'],['bank','caja','M170 241 V104 H420 V83']];
  const paths=[];
  E.forEach(([a,b,d])=>{const p=el('path',{d,fill:'none',stroke:'var(--line)','stroke-width':1.5,'marker-end':'url(#ar)'},svg);paths.push(p)});
  Object.entries(N).forEach(([k,n])=>{const g=el('g',{},svg);
@@ -99,7 +100,7 @@ sim();
   el('text',{x:n.x,y:n.y-4,'text-anchor':'middle','font-size':14,'font-weight':600,fill:'var(--ink)'},g,n.t);
   el('text',{x:n.x,y:n.y+14,'text-anchor':'middle','font-size':11.5,fill:'var(--ink-2)'},g,n.s);
   hover(g,`<b>${n.t}</b><br>${n.s}`)});
- el('text',{x:330,y:258,'text-anchor':'middle','font-size':10.5,fill:'var(--muted)'},svg,'');
+ el('text',{x:290,y:98,'text-anchor':'middle','font-size':11,fill:'var(--muted)'},svg,'callback → el comercio reenvía');
  el('text',{x:70,y:160,'font-size':11,fill:'var(--muted)',transform:'rotate(-90 70 160)','text-anchor':'middle'},svg,'paga por QR');
  const dots=paths.map((p,i)=>({p,len:p.getTotalLength(),c:el('circle',{r:3.5,fill:i%3===0?'var(--accent)':i%3===1?'var(--cyan)':'var(--sun)'},svg),o:Math.random(),sp:.25+Math.random()*.25}));
  function place(t){dots.forEach(d=>{const f=((t/1000)*d.sp+d.o)%1,pt=d.p.getPointAtLength(f*d.len);d.c.setAttribute('cx',pt.x);d.c.setAttribute('cy',pt.y)})}
@@ -131,13 +132,13 @@ sim();
  const defs=el('defs',{},svg);const mk=el('marker',{id:'sa',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'},defs);el('path',{d:'M0 0L10 5L0 10z',fill:'var(--accent)'},mk);
  A.forEach(([t,x],i)=>{el('rect',{x:x-78,y:12,width:156,height:38,rx:9,fill:i===2?'var(--accent-soft)':'var(--surface-2)',stroke:i===2?'var(--accent)':'var(--line)'},svg);
   el('text',{x,y:36,'text-anchor':'middle','font-size':13,'font-weight':600,fill:'var(--ink)'},svg,t);
-  el('line',{x1:x,x2:x,y1:50,y2:505,stroke:'var(--line)','stroke-dasharray':'4 5'},svg)});
+  el('line',{x1:x,x2:x,y1:50,y2:600,stroke:'var(--line)','stroke-dasharray':'4 5'},svg)});
  const X=i=>A[i][1];
- const S=[[1,2,'1. POST /orders (monto)'],[2,1,'2. QR de la orden'],[0,2,'3. Escanea QR y abre la orden'],[2,3,'4. Evaluar usuario y monto'],[3,2,'5. Aprobado en L2 · inicial 45%'],[0,4,'6. Paga la inicial por QR'],[4,2,'7. Webhook: pago confirmado'],[2,1,'8. Orden aprobada (WebSocket)'],[2,4,'9. Pago al comercio: fin de mes o día 7']];
+ const S=[[1,2,'1. POST /orders (monto)'],[2,1,'2. QR de la orden'],[0,2,'3. Escanea QR y abre la orden'],[2,3,'4. Evaluar usuario y monto'],[3,2,'5. Aprobado en L2 · inicial 45%'],[0,4,'6. Paga la inicial por QR'],[4,1,'7. Callback del banco al comercio'],[1,2,'8. Reenvía: POST /webhooks/merchant/payment'],[2,1,'9. Orden aprobada (WebSocket)'],[2,4,'10. Pago al comercio: fin de mes o día 7']];
  const steps=S.map(([a,b,t],i)=>{const y=82+i*46,g=el('g',{class:'seqstep'},svg);const x1=X(a),x2=X(b),dir=x2>x1?1:-1;
   el('line',{x1:x1+dir*4,x2:x2-dir*6,y1:y,y2:y,stroke:'var(--accent)','stroke-width':1.6,'marker-end':'url(#sa)'},g);
   el('text',{x:(x1+x2)/2,y:y-8,'text-anchor':'middle','font-size':12.5,fill:'var(--ink)'},g,t);return g});
- const y10=82+9*46;const g=el('g',{class:'seqstep'},svg);el('rect',{x:X(2)-90,y:y10-16,width:180,height:30,rx:8,fill:'var(--sun-soft)',stroke:'var(--sun)'},g);el('text',{x:X(2),y:y10+4,'text-anchor':'middle','font-size':12.5,fill:'var(--ink)'},g,'Crea 3 cuotas: d14, d28, d42');steps.push(g);
+ const y10=82+10*46;const g=el('g',{class:'seqstep'},svg);el('rect',{x:X(2)-90,y:y10-16,width:180,height:30,rx:8,fill:'var(--sun-soft)',stroke:'var(--sun)'},g);el('text',{x:X(2),y:y10+4,'text-anchor':'middle','font-size':12.5,fill:'var(--ink)'},g,'Crea 3 cuotas: d14, d28, d42');steps.push(g);
  let timer=null;
  $('#seqPlay').addEventListener('click',()=>{clearInterval(timer);svg.classList.add('running');steps.forEach(s=>s.classList.remove('on'));let i=0;
   const go=()=>{if(i>=steps.length){clearInterval(timer);setTimeout(()=>svg.classList.remove('running'),900);return}steps[i].classList.add('on');i++};go();timer=setInterval(go,reduce?50:650)});
@@ -158,7 +159,7 @@ sim();
 /* ---------- ERD ---------- */
 (function(){
  const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','nombre (Bronce…Diamante)','limite_l1_bs','limite_l2_bs','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
-  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','canal','ref_banco','idempotency_key','pagado_en'],
+  ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','comercio_id→comercios','canal (banco / comercio)','ref_banco','idempotency_key','pagado_en'],
   liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','multas_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};
  Object.entries(T).forEach(([t,cols])=>{cols.forEach(c=>{const m=c.split('→')[1];if(m){(rel[t]=rel[t]||new Set()).add(m);(rel[m]=rel[m]||new Set()).add(t)}})});
