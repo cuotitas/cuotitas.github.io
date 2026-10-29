@@ -10,10 +10,47 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="index.css">
+<style>
+.meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:22px}
+.meta .ctl{display:grid;gap:16px;align-content:start}
+.meta label{display:grid;gap:8px;font-size:14px;color:var(--ink-2)}
+.meta input[type=range]{width:100%}
+.meta .cells{grid-template-columns:repeat(2,1fr)}
+@media (max-width:800px){.meta{grid-template-columns:1fr}}
+@media (max-width:520px){.meta .cells{grid-template-columns:1fr}}
+.meta input[type=range]{accent-color:var(--accent)}
+</style>
 </head>
 <body>
 <main style="max-width:1200px;margin:0 auto;padding:28px 16px 60px">
   <a class="btn" href="index.html" style="display:inline-block;text-decoration:none;margin-bottom:24px">← Volver a Cuotitas</a>
+  <section id="meta" style="padding:0;margin-bottom:56px">
+  <header>
+    <span class="eyebrow">Meta de la empresa</span>
+    <h2>1 millón de usuarios con un ticket promedio de US$ 20</h2>
+    <p class="lead">Todo el plan apunta a esta meta. Mueve los valores para ver cuánto volumen, comisión y cartera significa.</p>
+  </header>
+  <div class="card meta">
+    <div class="ctl">
+      <label>Usuarios activos: <b class="num" id="uTxt"></b><input id="u" type="range" min="100000" max="1500000" step="50000" value="1000000"></label>
+      <label>Ticket promedio: <b class="num" id="tTxt"></b><input id="t" type="range" min="5" max="60" step="1" value="20"></label>
+      <label>Compras por usuario al mes: <b class="num" id="fTxt"></b><input id="f" type="range" min="0.5" max="4" step="0.5" value="2"></label>
+      <label>Comisión promedio al comercio: <b class="num" id="cTxt"></b><input id="c" type="range" min="4" max="11" step="0.5" value="5"></label>
+    </div>
+    <div class="cells">
+      <div class="cell"><span>Ticket en bolivianos</span><b id="o1"></b></div>
+      <div class="cell"><span>Compras al mes</span><b id="o2"></b></div>
+      <div class="cell"><span>Volumen al mes</span><b id="o3"></b></div>
+      <div class="cell"><span>Volumen al año</span><b id="o4"></b></div>
+      <div class="cell"><span>Comisiones al mes</span><b id="o5"></b></div>
+      <div class="cell"><span>Margen neto al mes</span><b id="o6"></b></div>
+      <div class="cell"><span>Cartera en la calle (aprox.)</span><b id="o7"></b></div>
+      <div class="cell"><span>Volumen por cada uno de los 15 comercios ancla, al mes</span><b id="o8"></b></div>
+    </div>
+  </div>
+  <p class="note">Supuestos: dólar a Bs 11,9; 2 compras al mes por usuario (la Línea 1 se usa cada semana); comisión promedio de 5% entre fin de mes (4%), 7 días (8%) y extra por venta en la app (+3%); impago, costo del dinero y cobro restan 2,3% del volumen; Cuotitas financia en promedio 60% de cada compra durante un mes. Con este volumen los 15 comercios grandes son la puerta de entrada, no el total: hará falta sumar cientos de comercios más.</p>
+  </section>
+
   <section id="clientes" style="padding:0">
   <header >
     <span class="eyebrow">Comercios de lanzamiento</span>
@@ -71,5 +108,18 @@
   <p class="note">Mezcla sugerida: farmacias, supermercados y restaurantes para la Línea 1, y electrónica, ferreterías, hoteles y motos para la Línea 2.</p>
 </section>
 </main>
+<script>
+(function(){const $=s=>document.querySelector(s),FX=11.9,COST=.023,FIN=.6;
+const nf=(n,d=0)=>n.toLocaleString('es-BO',{minimumFractionDigits:d,maximumFractionDigits:d});
+const big=n=>n>=1e9?nf(n/1e9,2)+' mil M':n>=1e6?nf(n/1e6,1)+' M':nf(n);
+function upd(){const u=+$('#u').value,t=+$('#t').value,f=+$('#f').value,c=+$('#c').value/100;
+ const tb=t*FX,n=u*f,v=n*tb,com=v*c,mg=v*(c-COST);
+ $('#uTxt').textContent=nf(u);$('#tTxt').textContent='US$ '+t;$('#fTxt').textContent=nf(f,1);$('#cTxt').textContent=nf(c*100,1)+'%';
+ $('#o1').textContent='Bs '+nf(tb);$('#o2').textContent=big(n);
+ $('#o3').textContent='Bs '+big(v)+' · US$ '+big(v/FX);$('#o4').textContent='Bs '+big(v*12)+' · US$ '+big(v*12/FX);
+ $('#o5').textContent='Bs '+big(com);$('#o6').textContent='Bs '+big(mg)+' · US$ '+big(mg/FX);
+ $('#o7').textContent='Bs '+big(v*FIN)+' · US$ '+big(v*FIN/FX);$('#o8').textContent='Bs '+big(v/15)}
+['#u','#t','#f','#c'].forEach(s=>$(s).addEventListener('input',upd));upd()})();
+</script>
 </body>
 </html>
