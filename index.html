@@ -48,7 +48,7 @@
   <div class="console" aria-label="Simulación de eventos de la API de Cuotitas">
     <div class="bar"><i></i><i></i><i></i><span>api.cuotitas.bo · simulación</span></div>
     <pre id="log"><span class="dim">10:41:02</span> <span class="in">POST</span> /v1/orders            <span class="ok">201</span> 84ms  Bs 1.200
-<span class="dim">10:41:03</span> <span class="in">RISK</span> score usr_8f2 nivel 2   <span class="ok">aprobado</span> inicial 45%
+<span class="dim">10:41:03</span> <span class="in">RISK</span> score usr_8f2 Plata     <span class="ok">aprobado</span> inicial 45%
 <span class="dim">10:41:05</span> <span class="in">HOOK</span> bank.qr.paid          <span class="ok">200</span> Bs 540,00
 <span class="dim">10:41:05</span> <span class="in">JOB </span> cuotas.crear ord_31c  <span class="ok">3 cuotas</span> d14 d28 d42
 <span class="dim">10:41:06</span> <span class="in">WS  </span> caja.orden.aprobada   <span class="ok">enviado</span>
@@ -75,7 +75,7 @@
       <div class="big">1 cuota a 14 días</div>
       <p style="color:var(--ink-2)">Para compras chicas y frecuentes. El cliente se lleva el producto hoy y paga el total en 14 días, sin inicial. Al pagar, la línea se libera de nuevo.</p>
       <div class="rubros"><span>Farmacias</span><span>Supermercados</span><span>Restaurantes</span><span>Salud</span><span>Alimentación</span></div>
-      <table class="minitbl"><thead><tr><th>Nivel</th><th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>N5</th></tr></thead>
+      <table class="minitbl"><thead><tr><th>Nivel</th><th>Bronce</th><th>Plata</th><th>Oro</th><th>Platino</th><th>Diamante</th></tr></thead>
         <tbody><tr><td>Línea Bs</td><td>300</td><td>500</td><td>800</td><td>1.200</td><td>1.500</td></tr></tbody></table>
       <p class="note">Límites por nivel: supuestos del plan. La comisión depende de cuándo cobra el comercio (abajo).</p>
     </div>
@@ -84,9 +84,9 @@
       <div class="big">Inicial + 3 a 6 cuotas</div>
       <p style="color:var(--ink-2)">Para compras grandes en cualquier rubro. La inicial, el número de cuotas y la línea dependen del nivel. Cuotas cada 14 días.</p>
       <div class="rubros"><span>Hoteles</span><span>Ferreterías</span><span>Electrónica</span><span>Celulares</span><span>Ropa</span><span>Motos</span><span>y más</span></div>
-      <table class="minitbl"><thead><tr><th>Nivel</th><th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>N5</th></tr></thead>
+      <table class="minitbl"><thead><tr><th>Nivel</th><th>Bronce</th><th>Plata</th><th>Oro</th><th>Platino</th><th>Diamante</th></tr></thead>
         <tbody><tr><td>Inicial</td><td>50%</td><td>45%</td><td>40%</td><td>30%</td><td>25%</td></tr><tr><td>Cuotas</td><td>3</td><td>3</td><td>4</td><td>6</td><td>6</td></tr><tr><td>Línea Bs</td><td>500</td><td>1.000</td><td>2.000</td><td>4.000</td><td>6.000</td></tr></tbody></table>
-      <p class="note">Niveles N2 a N4 y cuotas por nivel: supuestos del plan. La comisión depende de cuándo cobra el comercio (abajo).</p>
+      <p class="note">Cada nivel (Bronce, Plata, Oro, Platino y Diamante) tiene su propio límite; el cliente sube de nivel pagando a tiempo. Límites de Plata a Platino y cuotas por nivel: supuestos del plan. La comisión depende de cuándo cobra el comercio (abajo).</p>
     </div>
   </div>
   <div class="payout">
@@ -94,6 +94,8 @@
       <p style="color:var(--ink-2)">Cuotitas paga al comercio, el último día del mes, todo lo vendido en el mes menos 4%. Si un cliente no paga sus cuotas, <b style="color:var(--ink)">Cuotitas igual le paga al comercio</b> y asume la pérdida.</p></div>
     <div class="card glow rv"><span class="opt">Opción B · Cobro a los 7 días</span><div class="pct">8%</div>
       <p style="color:var(--ink-2)">Para el comercio que necesita liquidez: recibe cada venta 7 días después, menos 8%. La garantía es la misma: el impago lo asume Cuotitas.</p></div>
+    <div class="card glow rv"><span class="opt">Extra · Venta desde la app</span><div class="pct">+3%</div>
+      <p style="color:var(--ink-2)">Los comercios afiliados publican sus productos en el <b style="color:var(--ink)">marketplace de la app</b>. Si el cliente compra desde ahí, Cuotitas le trajo la venta y cobra 3% extra: 7% a fin de mes u 11% a los 7 días.</p></div>
   </div>
   <div class="rules">
     <div class="card glow rv"><h3>Por qué dos líneas</h3><p style="color:var(--ink-2);font-size:15px">La Línea 1 se usa cada semana: crea hábito, da datos de pago rápido y sube al cliente de nivel antes de que pida un crédito grande.</p></div>
@@ -113,9 +115,13 @@
         <div class="seg" role="group" aria-labelledby="poLab" style="grid-template-columns:1fr 1fr">
           <button type="button" data-po="m" aria-pressed="true">Fin de mes · 4%</button><button type="button" data-po="7" aria-pressed="false">7 días · 8%</button>
         </div></div>
+      <div><label id="orLab">Dónde compra el cliente</label>
+        <div class="seg" role="group" aria-labelledby="orLab" style="grid-template-columns:1fr 1fr">
+          <button type="button" data-or="t" aria-pressed="true">En la tienda</button><button type="button" data-or="a" aria-pressed="false">En la app · +3%</button>
+        </div></div>
       <div><label id="lvLab">Nivel del cliente</label>
-        <div class="seg" role="group" aria-labelledby="lvLab">
-          <button type="button" data-l="1" aria-pressed="true">N1</button><button type="button" data-l="2" aria-pressed="false">N2</button><button type="button" data-l="3" aria-pressed="false">N3</button><button type="button" data-l="4" aria-pressed="false">N4</button><button type="button" data-l="5" aria-pressed="false">N5</button>
+        <div class="seg" role="group" aria-labelledby="lvLab" style="grid-template-columns:repeat(3,1fr)">
+          <button type="button" data-l="1" aria-pressed="true">Bronce</button><button type="button" data-l="2" aria-pressed="false">Plata</button><button type="button" data-l="3" aria-pressed="false">Oro</button><button type="button" data-l="4" aria-pressed="false">Platino</button><button type="button" data-l="5" aria-pressed="false">Diamante</button>
         </div></div>
       <p class="note">Línea 2: inicial, cuotas y límite según el nivel. Línea 1: sin inicial, una cuota a 14 días.</p>
     </div>
@@ -173,14 +179,22 @@
 <span class="c"># En farmacia o súper la orden usa L1:</span>
 → <span class="n">200</span> { <span class="s">"line"</span>: <span class="s">"L1"</span>, <span class="s">"down_payment_bs"</span>: <span class="n">0</span>, <span class="s">"installments"</span>: [<span class="n">85.50</span>] }
 
-<span class="c"># El banco confirma un pago QR (firma HMAC)</span>
+<span class="c"># El comercio reenvía el callback de su banco y Cuotitas amortiza la cuota</span>
+<span class="k">POST</span> /v1/webhooks/merchant/payment
+X-Cuotitas-Signature: hmac-sha256(secreto_del_comercio, cuerpo)
+Idempotency-Key: ref_banco
+{ <span class="s">"merchant_id"</span>, <span class="s">"bank_ref"</span>, <span class="s">"order_id"</span>, <span class="s">"amount_bs"</span>: <span class="n">220.00</span>, <span class="s">"paid_at"</span> }
+→ <span class="n">200</span> { <span class="s">"applied"</span>: [{ <span class="s">"installment"</span>: <span class="n">2</span>, <span class="s">"amount_bs"</span>: <span class="n">220</span> }], <span class="s">"pending_bs"</span>: <span class="n">220</span> }
+
+<span class="c"># El banco aliado también puede avisar directo (firma HMAC)</span>
 <span class="k">POST</span> /v1/webhooks/bank/qr-paid
 <span class="k">GET</span>  /v1/users/me/limits</pre></div>
     <div class="card rv"><h3>Prácticas de ingeniería</h3>
       <ul class="clean">
         <li><b>Infraestructura como código</b> con Terraform; entornos dev, staging y producción idénticos.</li>
         <li><b>CI/CD</b> en GitHub Actions: pruebas, análisis estático y despliegue azul-verde.</li>
-        <li><b>Idempotencia</b> en pagos y webhooks: una clave por operación evita cobros dobles.</li>
+        <li><b>Idempotencia</b> en pagos y webhooks: la referencia del banco es la clave, así un callback reenviado dos veces no amortiza dos veces.</li>
+        <li><b>Integración con el comercio</b>: cada comercio firma con su propio secreto; Cuotitas verifica la firma y confirma el pago con el banco antes de amortizar.</li>
         <li><b>Dinero en centavos enteros</b> y redondeo en la última cuota.</li>
         <li><b>Observabilidad</b>: logs estructurados, métricas en Grafana, errores en Sentry, alertas a guardia.</li>
         <li><b>Respaldos</b> diarios con 35 días de retención y prueba de restauración mensual.</li>
@@ -197,7 +211,7 @@
   </header>
   <div class="card rv" style="gap:16px">
     <button class="btn" id="seqPlay" type="button">▶ Reproducir el flujo</button>
-    <div class="scrollx"><svg class="diagram seq" id="seq" viewBox="0 0 960 520" role="img" aria-label="Diagrama de secuencia de una compra"></svg></div>
+    <div class="scrollx"><svg class="diagram seq" id="seq" viewBox="0 0 960 615" role="img" aria-label="Diagrama de secuencia de una compra"></svg></div>
   </div>
   <div class="card rv">
     <h3>Estados de una cuota</h3>
@@ -288,7 +302,7 @@
         <button type="button" data-wo="m" aria-pressed="true">Fin de mes · 4%</button><button type="button" data-wo="7" aria-pressed="false">7 días · 8%</button>
       </div>
       <svg class="chart" id="water" viewBox="0 0 520 280" role="img" aria-label="Margen por compra de Bs 1.000 según la opción de cobro"></svg>
-      <p class="note">Compra de Bs 1.000 en Línea 2, nivel 1 (Bs 500 financiados). Verde suma, rojo resta, gris es el resultado. Con cobro a fin de mes Cuotitas recibe parte de las cuotas antes de pagar, por eso el costo del dinero es menor. Supuestos del plan.</p>
+      <p class="note">Compra de Bs 1.000 en Línea 2, nivel Bronce (Bs 500 financiados). Verde suma, rojo resta, gris es el resultado. Con cobro a fin de mes Cuotitas recibe parte de las cuotas antes de pagar, por eso el costo del dinero es menor. Supuestos del plan.</p>
     </div>
     <div class="card rv" style="align-content:start">
       <h3>Competencia</h3>
