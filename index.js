@@ -38,7 +38,7 @@ const evs=[
  ['JOB ','liquidacion.dia7     ','Bs '+fmt(48210),'ok',()=>'12 comercios · 8%'],
  ['RISK',()=>`score usr_${Math.random().toString(16).slice(2,5)} Bronce  `,'rechazado','wa',()=>'supera la línea'],
  ['JOB ','cuota.vencida        ','congelada','wa',()=>'L1 y L2 en pausa'],
- ['JOB ','cuota.multa          ','Bs 50','wa',()=>'gracia vencida · al comercio'],
+ ['JOB ','cuota.multa          ','Bs 50','wa',()=>'gracia vencida · gestión de cobro'],
  ['RISK',()=>`farmacia usr_${Math.random().toString(16).slice(2,5)} L1  `,'aprobado','ok',()=>`1 cuota d14 Bs ${fmt(20+Math.floor(Math.random()*180))}`]];
 let lines=log.innerHTML.split('\n').filter(l=>l&&!l.includes('caret'));
 let clock=10*3600+41*60+9;
@@ -160,7 +160,7 @@ sim();
 (function(){
  const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','nombre (Bronce…Diamante)','limite_l1_bs','limite_l2_bs','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
   ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','comercio_id→comercios','canal (banco / comercio)','ref_banco','idempotency_key','pagado_en'],
-  liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','multas_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
+  liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};
  Object.entries(T).forEach(([t,cols])=>{cols.forEach(c=>{const m=c.split('→')[1];if(m){(rel[t]=rel[t]||new Set()).add(m);(rel[m]=rel[m]||new Set()).add(t)}})});
  Object.entries(T).forEach(([t,cols])=>{const d=document.createElement('div');d.className='ent';d.dataset.t=t;
