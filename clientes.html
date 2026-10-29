@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="index.css">
+<script>try{const t=localStorage.getItem('cuotitas-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 .meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:22px}
 .meta .ctl{display:grid;gap:16px;align-content:start}
@@ -23,7 +24,10 @@
 </head>
 <body>
 <main style="max-width:1200px;margin:0 auto;padding:28px 16px 60px">
-  <a class="btn" href="index.html" style="display:inline-block;text-decoration:none;margin-bottom:24px">← Volver a Cuotitas</a>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px">
+    <a class="btn" href="index.html" style="display:inline-block;text-decoration:none">← Volver a Cuotitas</a>
+    <button class="theme" id="theme" type="button" aria-label="Cambiar tema claro u oscuro">Tema</button>
+  </div>
   <section id="meta" style="padding:0;margin-bottom:56px">
   <header>
     <span class="eyebrow">Meta de la empresa</span>
@@ -119,7 +123,9 @@ function upd(){const u=+$('#u').value,t=+$('#t').value,f=+$('#f').value,c=+$('#c
  $('#o3').textContent='Bs '+big(v)+' · US$ '+big(v/FX);$('#o4').textContent='Bs '+big(v*12)+' · US$ '+big(v*12/FX);
  $('#o5').textContent='Bs '+big(com);$('#o6').textContent='Bs '+big(mg)+' · US$ '+big(mg/FX);
  $('#o7').textContent='Bs '+big(v*FIN)+' · US$ '+big(v*FIN/FX);$('#o8').textContent='Bs '+big(v/15)}
-['#u','#t','#f','#c'].forEach(s=>$(s).addEventListener('input',upd));upd()})();
+['#u','#t','#f','#c'].forEach(s=>$(s).addEventListener('input',upd));upd();
+ const root=document.documentElement;
+ $('#theme').addEventListener('click',()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;root.dataset.theme=dark?'light':'dark';try{localStorage.setItem('cuotitas-theme',root.dataset.theme)}catch(e){}})})();
 </script>
 </body>
 </html>
