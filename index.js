@@ -84,7 +84,7 @@ sim();
   api:{x:480,y:268,w:300,t:'API Cuotitas (NestJS)',s:'KYC · riesgo · órdenes · cuotas · cobranza · liquidación',c:'s1',main:true},
   bank:{x:120,y:268,w:180,t:'Banco aliado',s:'QR y callbacks',c:'s3'},
   work:{x:840,y:268,w:180,t:'Workers + SQS',s:'vencimientos, avisos',c:'s2'},
-  kyc:{x:100,y:400,w:160,t:'KYC e Infocred',s:'identidad, buró',c:'s3'},
+  kyc:{x:100,y:400,w:160,t:'KYC y central de riesgo',s:'CI, rostro, buró',c:'s3'},
   pg:{x:290,y:400,w:160,t:'PostgreSQL 16',s:'RDS Multi-AZ',c:'s2'},
   rd:{x:480,y:400,w:160,t:'Redis',s:'sesiones, límites',c:'s2'},
   s3:{x:670,y:400,w:160,t:'S3 cifrado',s:'documentos KYC',c:'s2'},
@@ -158,7 +158,7 @@ sim();
 
 /* ---------- ERD ---------- */
 (function(){
- const T={usuarios:['id','ci','telefono','nivel_id→niveles','estado','creado_en'],niveles:['id','nombre (Bronce…Diamante)','limite_l1_bs','limite_l2_bs','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
+ const T={usuarios:['id','ci','telefono','nivel_id→niveles','kyc_estado','buro_score','estado','creado_en'],niveles:['id','nombre (Bronce…Diamante)','limite_l1_bs','limite_l2_bs','requisito'],lineas_credito:['id','usuario_id→usuarios','tipo (L1 / L2)','limite_bs','disponible_bs','estado'],politicas_linea:['id','tipo (L1 / L2)','nivel_id→niveles','inicial_pct','num_cuotas','limite_bs'],comercios:['id','nit','rubro','tipo_linea (L1 / L2)','modo_cobro (mes / 7d)','comision_pct','cuenta_banco'],
   ordenes:['id','usuario_id→usuarios','comercio_id→comercios','linea_id→lineas_credito','origen (tienda / app)','monto_bs','inicial_bs','estado'],cuotas:['id','orden_id→ordenes','numero','vence_el','gracia_hasta','monto_bs','multa_bs','estado'],pagos:['id','cuota_id→cuotas','comercio_id→comercios','canal (banco / comercio)','ref_banco','idempotency_key','pagado_en'],
   liquidaciones:['id','comercio_id→comercios','modo_cobro','fecha_pago','bruto_bs','comision_bs','neto_bs'],auditoria:['id','actor','accion','entidad','datos_json','ts']};
  const erd=$('#erd');const rel={};

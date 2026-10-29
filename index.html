@@ -105,6 +105,16 @@
     <div class="card glow rv"><h3>1 día de gracia, luego Bs 50</h3><p style="color:var(--ink-2);font-size:15px">Cuando vence una cuota, el cliente tiene un día de gracia automático. Si sigue sin pagar, se le cobra una <b style="color:var(--ink)">multa fija de Bs 50 por cada cuota vencida</b>, que queda para Cuotitas por la gestión de cobro.</p></div>
     <div class="card glow rv"><h3>Riesgo separado</h3><p style="color:var(--ink-2);font-size:15px">Cada línea tiene su propio límite y su propia meta de mora, así una pérdida en compras grandes no frena el día a día.</p></div>
   </div>
+  <div class="card rv onbw">
+    <h3>Registro del cliente en 4 pasos</h3>
+    <p style="color:var(--ink-2);font-size:15px;margin:0">Todo desde la app, en unos minutos. Costo estimado de verificación: unos Bs 8 por usuario nuevo.</p>
+    <ol class="onb">
+      <li><span class="n">1</span><b>Foto del CI</b><span>Anverso y reverso. Se lee el número, nombre y fecha de nacimiento.</span></li>
+      <li><span class="n">2</span><b>Sus datos</b><span>Teléfono, dirección, ocupación e ingreso aproximado. Se confirman contra el CI.</span></li>
+      <li><span class="n">3</span><b>Reconocimiento facial</b><span>Selfie con prueba de vida, comparada con la foto del CI.</span></li>
+      <li><span class="n">4</span><b>Central de riesgo</b><span>Consulta por API a la central de riesgo con su consentimiento. Con eso se asigna el nivel Bronce y su límite.</span></li>
+    </ol>
+  </div>
   <div class="card glow sim rv">
     <div style="display:grid;gap:18px;align-content:start">
       <div><label for="precio">Precio del producto: <b class="num" id="precioTxt">Bs 1.000</b></label>
@@ -190,7 +200,14 @@ Idempotency-Key: ref_banco
 
 <span class="c"># El banco aliado también puede avisar directo (firma HMAC)</span>
 <span class="k">POST</span> /v1/webhooks/bank/qr-paid
-<span class="k">GET</span>  /v1/users/me/limits</pre></div>
+<span class="k">GET</span>  /v1/users/me/limits
+
+<span class="c"># Registro: CI, datos, rostro y central de riesgo</span>
+<span class="k">POST</span> /v1/kyc/id-document   <span class="c"># fotos del CI</span>
+<span class="k">POST</span> /v1/kyc/profile       <span class="c"># datos del cliente</span>
+<span class="k">POST</span> /v1/kyc/selfie        <span class="c"># prueba de vida + comparación con el CI</span>
+<span class="k">POST</span> /v1/kyc/bureau-check  <span class="c"># consulta a la central de riesgo</span>
+→ <span class="n">200</span> { <span class="s">"status"</span>: <span class="s">"approved"</span>, <span class="s">"level"</span>: <span class="s">"Bronce"</span>, <span class="s">"limits_bs"</span>: { <span class="s">"L1"</span>: <span class="n">300</span>, <span class="s">"L2"</span>: <span class="n">500</span> } }</pre></div>
     <div class="card rv"><h3>Prácticas de ingeniería</h3>
       <ul class="clean">
         <li><b>Infraestructura como código</b> con Terraform; entornos dev, staging y producción idénticos.</li>
