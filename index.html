@@ -101,7 +101,7 @@
   <div class="rules">
     <div class="card glow rv"><h3>Por qué dos líneas</h3><p style="color:var(--ink-2);font-size:15px">La Línea 1 se usa cada semana: crea hábito, da datos de pago rápido y sube al cliente de nivel antes de que pida un crédito grande.</p></div>
     <div class="card glow rv"><h3>Un atraso congela todo</h3><p style="color:var(--ink-2);font-size:15px">Si el cliente no paga en cualquiera de las líneas, las dos se congelan hasta que se ponga al día.</p></div>
-    <div class="card glow rv"><h3>1 día de gracia, luego Bs 50</h3><p style="color:var(--ink-2);font-size:15px">Cuando vence una cuota, el cliente tiene un día de gracia automático. Si sigue sin pagar, se le cobra una <b style="color:var(--ink)">multa fija de Bs 50 por cada cuota vencida</b>, y esa multa va completa al comercio.</p></div>
+    <div class="card glow rv"><h3>1 día de gracia, luego Bs 50</h3><p style="color:var(--ink-2);font-size:15px">Cuando vence una cuota, el cliente tiene un día de gracia automático. Si sigue sin pagar, se le cobra una <b style="color:var(--ink)">multa fija de Bs 50 por cada cuota vencida</b>, que queda para Cuotitas por la gestión de cobro.</p></div>
     <div class="card glow rv"><h3>Riesgo separado</h3><p style="color:var(--ink-2);font-size:15px">Cada línea tiene su propio límite y su propia meta de mora, así una pérdida en compras grandes no frena el día a día.</p></div>
   </div>
   <div class="card glow sim rv">
@@ -217,7 +217,7 @@ Idempotency-Key: ref_banco
   <div class="card rv">
     <h3>Estados de una cuota</h3>
     <div class="scrollx"><svg class="diagram" id="states" viewBox="0 0 960 230" role="img" aria-label="Estados de una cuota: programada, por vencer, pagada, en gracia, en mora con multa, castigada"></svg></div>
-    <p class="note">El día del vencimiento y el siguiente son de gracia, sin multa. Desde el día 2 la cuota queda en mora: multa fija de Bs 50 (una vez por cuota) que se transfiere al comercio, y la cuenta se congela hasta pagar. Los días de cobranza y castigo son supuestos del plan.</p>
+    <p class="note">El día del vencimiento y el siguiente son de gracia, sin multa. Desde el día 2 la cuota queda en mora: multa fija de Bs 50 (una vez por cuota, unos US$ 4) que cobra Cuotitas por la gestión de cobro, y la cuenta se congela hasta pagar. Los días de cobranza y castigo son supuestos del plan.</p>
   </div>
 </section>
 
