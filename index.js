@@ -178,8 +178,8 @@ function hbars(id,rows,{max,left=150,w=520,rowH=36,top=6,f,color}){
   el('text',{x:left+X(r.v)+8,y:y+rowH/2+4,class:'val'},svg,f(r.v));
   const hit=el('rect',{x:0,y,width:w,height:rowH,fill:'transparent'},svg);hover(hit,`<b>${r.k}</b><br>${f(r.v)}${r.n?'<br>'+r.n:''}`)});
 }
-hbars('devcost',[{k:'Desarrollo Servisofts SRL',v:571200,n:'US$ 6.000 × 8 meses, con UX/UI y DevOps'},{k:'Nube (8 meses)',v:44000,n:'dev, staging y producción'},{k:'Pentest externo',v:35000},{k:'Servicios externos',v:30000,n:'KYC, WhatsApp, cuentas de tiendas'}],
- {max:571200,left:170,rowH:44,f:v=>'Bs '+fmt(v),color:r=>r.k.startsWith('Desarrollo')?'var(--s1)':r.k==='Servicios externos'?'var(--s3)':'var(--s2)'});
+hbars('devcost',[{k:'Desarrollo Servisofts SRL',v:476000,n:'US$ 5.000 × 8 meses, con UX/UI y DevOps'},{k:'Nube (8 meses)',v:0,n:'gratis: la pone Servisofts el primer año'},{k:'Pentest externo',v:35000},{k:'Servicios externos',v:30000,n:'KYC, WhatsApp, cuentas de tiendas'}],
+ {max:476000,left:170,rowH:44,f:v=>'Bs '+fmt(v),color:r=>r.k.startsWith('Desarrollo')?'var(--s1)':r.k==='Servicios externos'?'var(--s3)':'var(--s2)'});
 hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manager',v:8},{k:'Integrador',v:8},{k:'QA / pruebas',v:8},{k:'Diseño UX/UI',v:8},{k:'DevOps',v:8}],
  {max:16,left:150,rowH:44,f:v=>v+' meses-persona',color:r=>r.k==='Integrador'||r.k==='DevOps'?'var(--s2)':r.k.startsWith('QA')?'var(--s3)':r.k==='Project manager'?'var(--mark)':'var(--s1)'});
 
@@ -188,7 +188,7 @@ hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manag
  const svg=$('#vs');const left=150,W=300,max=1500000,X=v=>left+v/max*W;
  [0,500000,1000000,1500000].forEach(t=>{el('line',{x1:X(t),x2:X(t),y1:14,y2:182,stroke:'var(--line)'},svg);el('text',{x:X(t),y:202,'text-anchor':'middle',class:'lab'},svg,t?fmt(t/1e6,1)+' M':'0')});
  el('text',{x:left-10,y:52,'text-anchor':'end',class:'lab'},svg,'Servisofts SRL');
- const s=el('rect',{x:left,y:34,width:X(571200)-left,height:28,rx:4,fill:'var(--accent)',class:'hbar'},svg);el('text',{x:X(571200)+8,y:53,class:'val'},svg,'Bs 0,57 M');hover(s,'Servisofts SRL: US$ 48.000 (Bs 571.200)');
+ const s=el('rect',{x:left,y:34,width:X(476000)-left,height:28,rx:4,fill:'var(--accent)',class:'hbar'},svg);el('text',{x:X(476000)+8,y:53,class:'val'},svg,'Bs 0,48 M');hover(s,'Servisofts SRL: US$ 40.000 (Bs 476.000)');
  el('text',{x:left-10,y:104,'text-anchor':'end',class:'lab'},svg,'Equipo propio');
  const a=el('rect',{x:left,y:86,width:X(890675)-left,height:28,rx:4,fill:'var(--mark)',class:'hbar',style:'animation-delay:120ms'},svg);el('text',{x:X(890675)+8,y:105,class:'val'},svg,'Bs 0,89 M');hover(a,'Equipo propio: Bs 890.675');
  el('text',{x:left-10,y:156,'text-anchor':'end',class:'lab'},svg,'Fábrica de software');
@@ -214,7 +214,7 @@ hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manag
 
 /* tech run cost: stacked bars per year */
 (function(){
- const svg=$('#techrun');const rows=[{y:'Año 1',f:0.096,u:0.171},{y:'Año 2',f:0.18,u:1.058},{y:'Año 3',f:0.30,u:2.306}];
+ const svg=$('#techrun');const rows=[{y:'Año 1',f:0,u:0.171},{y:'Año 2',f:0.18,u:1.058},{y:'Año 3',f:0.30,u:2.306}];
  const left=60,right=940,top=20,bot=210,max=3,Y=v=>bot-v/max*(bot-top);
  [0,1,2,3].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
  const bw=(right-left)/3;
@@ -248,35 +248,35 @@ hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manag
 
 /* annual */
 (function(){
- const svg=$('#annual');const R=[['Año 1',-2.53],['Año 2',-0.69],['Año 3',8.93]];const left=44,right=500,top=24,bot=200,lo=-4,hi=11,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/3;
- [-4,0,4,8].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-8,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
+ const svg=$('#annual');const R=[['Año 1',0.4],['Año 2',15.69],['Año 3',53.04],['Año 4',116.49],['Año 5',183.32]];const left=44,right=500,top=24,bot=200,lo=0,hi=200,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/R.length;
+ [0,50,100,150,200].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-8,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
  R.forEach(([k,v],i)=>{const x=left+i*bw+bw*.28,w=bw*.44,p=v>=0;const b=el('rect',{x,y:p?Y(v):Y(0),width:w,height:Math.max(2,Math.abs(Y(v)-Y(0))),rx:4,fill:p?'var(--s1)':'var(--mark)',class:'bar'+(p?'':' neg'),style:`animation-delay:${i*140}ms`},svg);
   el('text',{x:x+w/2,y:p?Y(v)-8:Y(v)+16,'text-anchor':'middle',class:'val'},svg,(v>0?'+':'')+fmt(v,2));el('text',{x:x+w/2,y:bot+30,'text-anchor':'middle',class:'lab'},svg,k);hover(b,`<b>${k}</b><br>Bs ${fmt(v,2)} M`)});
 })();
 
 /* cash line with crosshair */
 (function(){
- const caja=[-0.28,-0.37,-0.46,-0.55,-0.79,-1.21,-1.65,-2.39,-3.02,-3.67,-4.34,-5.03,-5.73,-6.48,-7.01,-7.51,-7.98,-8.41,-8.80,-9.16,-9.47,-9.74,-9.96,-10.13,-10.25,-10.88,-10.83,-10.71,-10.52,-10.26,-9.93,-9.52,-9.04,-8.47,-7.83,-7.11];
- const res=[-0.28,-0.09,-0.09,-0.09,-0.18,-0.18,-0.17,-0.42,-0.28,-0.27,-0.25,-0.23,-0.21,-0.36,-0.24,-0.20,-0.15,-0.10,-0.05,0.01,0.06,0.12,0.18,0.25,0.31,0.29,0.47,0.55,0.62,0.70,0.79,0.87,0.95,1.04,1.13,1.21];
- const svg=$('#cash');const left=56,right=940,top=24,bot=280,X=m=>left+(m-1)/35*(right-left),Y=v=>top+(-v)/12*(bot-top);
+ const caja=[-0.15,-0.25,-0.36,-0.96,-1.6,-2.19,-2.71,-3.21,-3.56,-3.84,-4.06,-4.22,-5.29,-6.37,-7.28,-8.01,-8.56,-8.92,-9.1,-9.1,-8.91,-8.54,-7.98,-7.24,-7.87,-8.43,-8.64,-8.46,-7.91,-6.97,-5.65,-3.94,-1.85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+ const res=[-0.15,-0.11,-0.11,-0.18,-0.12,-0.06,0.0001,0.03,0.18,0.24,0.3,0.37,0.3,0.48,0.66,0.85,1.03,1.22,1.4,1.58,1.77,1.95,2.13,2.32,2.32,2.7,3.08,3.46,3.84,4.23,4.61,4.99,5.38,5.76,6.14,6.52,6.77,7.3,7.83,8.37,8.9,9.44,9.97,10.51,11.05,11.58,12.12,12.65,13.16,13.55,13.94,14.32,14.7,15.09,15.47,15.85,16.23,16.62,17,17.38];
+ const svg=$('#cash');const left=56,right=940,top=24,bot=280,N=caja.length,X=m=>left+(m-1)/(N-1)*(right-left),Y=v=>top+(-v)/10*(bot-top);
  const defs=el('defs',{},svg);const gr=el('linearGradient',{id:'cg',x1:0,x2:0,y1:0,y2:1},defs);el('stop',{offset:'0','stop-color':'var(--accent)','stop-opacity':.02},gr);el('stop',{offset:'1','stop-color':'var(--accent)','stop-opacity':.22},gr);
- [0,-3,-6,-9,-12].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
- [1,6,12,18,24,30,36].forEach(m=>el('text',{x:X(m),y:bot+24,'text-anchor':'middle',class:'lab'},svg,'Mes '+m));
- [['Año 1',6.5],['Año 2',18.5],['Año 3',30.5]].forEach(([t,m])=>el('text',{x:X(m),y:top+16,'text-anchor':'middle',class:'lab',style:'fill:var(--muted)'},svg,t));
- [12.5,24.5].forEach(m=>el('line',{x1:X(m),x2:X(m),y1:top,y2:bot,stroke:'var(--line)'},svg));
+ [0,-2,-4,-6,-8,-10].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
+ [1,12,24,36,48,60].forEach(m=>el('text',{x:X(m),y:bot+24,'text-anchor':'middle',class:'lab'},svg,'Mes '+m));
+ [['Año 1',6.5],['Año 2',18.5],['Año 3',30.5],['Año 4',42.5],['Año 5',54.5]].forEach(([t,m])=>el('text',{x:X(m),y:top+16,'text-anchor':'middle',class:'lab',style:'fill:var(--muted)'},svg,t));
+ [12.5,24.5,36.5,48.5].forEach(m=>el('line',{x1:X(m),x2:X(m),y1:top,y2:bot,stroke:'var(--line)'},svg));
  const be=res.findIndex(v=>v>0)+1;el('line',{x1:X(be),x2:X(be),y1:top+24,y2:bot,stroke:'var(--sun)','stroke-dasharray':'4 4','stroke-width':1.5},svg);
- el('text',{x:X(be)-8,y:bot-12,'text-anchor':'end',class:'lab',style:'fill:var(--ink)'},svg,'Mes '+be+': la operación ya gana dinero');
+ el('text',{x:X(be)+8,y:top+40,'text-anchor':'start',class:'lab',style:'fill:var(--ink)'},svg,'Mes '+be+': la operación ya gana dinero');
  const d=caja.map((v,i)=>(i?'L':'M')+X(i+1)+' '+Y(v)).join('');
- el('path',{d:`M${X(1)} ${Y(0)}`+d.replace('M','L')+`L${X(36)} ${Y(0)}Z`,fill:'url(#cg)'},svg);
+ el('path',{d:`M${X(1)} ${Y(0)}`+d.replace('M','L')+`L${X(N)} ${Y(0)}Z`,fill:'url(#cg)'},svg);
  const line=el('path',{d,fill:'none',stroke:'var(--accent)','stroke-width':2.5,'stroke-linejoin':'round',class:'drawline'},svg);line.style.setProperty('--len',line.getTotalLength());
  let lo=0;caja.forEach((v,i)=>{if(v<caja[lo])lo=i});
  el('circle',{cx:X(lo+1),cy:Y(caja[lo]),r:6,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':2},svg);
  el('text',{x:X(lo+1)+12,y:Y(caja[lo])+22,class:'val',style:'font-weight:600;font-size:13px'},svg,'Bs '+fmt(-caja[lo],1)+' M en el mes '+(lo+1));
  const cross=el('line',{y1:top,y2:bot,stroke:'var(--ink-2)',opacity:0},svg),dot=el('circle',{r:5,fill:'var(--surface)',stroke:'var(--accent)','stroke-width':2,opacity:0},svg);
  const hit=el('rect',{x:left,y:top,width:right-left,height:bot-top,fill:'transparent'},svg);
- hit.addEventListener('pointermove',e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());const m=Math.max(1,Math.min(36,Math.round((p.x-left)/(right-left)*35)+1));
+ hit.addEventListener('pointermove',e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());const m=Math.max(1,Math.min(N,Math.round((p.x-left)/(right-left)*(N-1))+1));
   cross.setAttribute('x1',X(m));cross.setAttribute('x2',X(m));cross.setAttribute('opacity',.5);dot.setAttribute('cx',X(m));dot.setAttribute('cy',Y(caja[m-1]));dot.setAttribute('opacity',1);
-  showTip(`<b>Mes ${m}</b><br>Caja acumulada: Bs ${fmt(caja[m-1],2)} M<br>Resultado del mes: Bs ${fmt(res[m-1],2)} M`,e.clientX,e.clientY)});
+  showTip(`<b>Mes ${m}</b><br>Necesidad de financiamiento: Bs ${fmt(-caja[m-1],2)} M<br>Resultado del mes: Bs ${fmt(res[m-1],2)} M`,e.clientX,e.clientY)});
  hit.addEventListener('pointerleave',()=>{cross.setAttribute('opacity',0);dot.setAttribute('opacity',0);hideTip()});
 })();
 
