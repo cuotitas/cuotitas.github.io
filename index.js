@@ -248,19 +248,19 @@ hbars('effort',[{k:'Backend (2)',v:16},{k:'Frontend (2)',v:16},{k:'Project manag
 
 /* annual */
 (function(){
- const svg=$('#annual');const R=[['Año 1',0.82],['Año 2',18.85],['Año 3',62.5],['Año 4',135.98],['Año 5',212.5]];const left=44,right=500,top=24,bot=200,lo=0,hi=240,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/R.length;
- [0,80,160,240].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-8,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
+ const svg=$('#annual');const R=[['Año 1',0.4],['Año 2',15.69],['Año 3',53.04],['Año 4',116.49],['Año 5',183.32]];const left=44,right=500,top=24,bot=200,lo=0,hi=200,Y=v=>top+(hi-v)/(hi-lo)*(bot-top),bw=(right-left)/R.length;
+ [0,50,100,150,200].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-8,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
  R.forEach(([k,v],i)=>{const x=left+i*bw+bw*.28,w=bw*.44,p=v>=0;const b=el('rect',{x,y:p?Y(v):Y(0),width:w,height:Math.max(2,Math.abs(Y(v)-Y(0))),rx:4,fill:p?'var(--s1)':'var(--mark)',class:'bar'+(p?'':' neg'),style:`animation-delay:${i*140}ms`},svg);
   el('text',{x:x+w/2,y:p?Y(v)-8:Y(v)+16,'text-anchor':'middle',class:'val'},svg,(v>0?'+':'')+fmt(v,2));el('text',{x:x+w/2,y:bot+30,'text-anchor':'middle',class:'lab'},svg,k);hover(b,`<b>${k}</b><br>Bs ${fmt(v,2)} M`)});
 })();
 
 /* cash line with crosshair */
 (function(){
- const caja=[-0.15,-0.25,-0.36,-1.24,-2.22,-3.13,-3.98,-4.79,-5.44,-6.02,-6.53,-6.96,-8.87,-10.87,-12.7,-14.34,-15.8,-17.05,-18.11,-18.98,-19.64,-20.1,-20.35,-20.39,-22.7,-25.09,-27.13,-28.76,-29.97,-30.75,-31.1,-31.01,-30.48,-29.51,-28.08,-26.2,-25.76,-25.09,-23.84,-21.96,-19.44,-16.28,-12.46,-7.99,-2.87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
- const res=[-0.15,-0.11,-0.11,-0.17,-0.1,-0.03,0.04,0.07,0.24,0.31,0.38,0.45,0.42,0.62,0.83,1.04,1.25,1.46,1.68,1.89,2.1,2.31,2.52,2.73,2.8,3.23,3.67,4.11,4.55,4.99,5.43,5.87,6.31,6.75,7.19,7.63,7.95,8.56,9.18,9.79,10.41,11.02,11.64,12.26,12.87,13.49,14.1,14.72,15.28,15.73,16.17,16.61,17.05,17.49,17.93,18.37,18.81,19.25,19.69,20.13];
- const svg=$('#cash');const left=56,right=940,top=24,bot=280,N=caja.length,X=m=>left+(m-1)/(N-1)*(right-left),Y=v=>top+(-v)/35*(bot-top);
+ const caja=[-0.15,-0.25,-0.36,-0.96,-1.6,-2.19,-2.71,-3.21,-3.56,-3.84,-4.06,-4.22,-5.29,-6.37,-7.28,-8.01,-8.56,-8.92,-9.1,-9.1,-8.91,-8.54,-7.98,-7.24,-7.87,-8.43,-8.64,-8.46,-7.91,-6.97,-5.65,-3.94,-1.85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+ const res=[-0.15,-0.11,-0.11,-0.18,-0.12,-0.06,0.0001,0.03,0.18,0.24,0.3,0.37,0.3,0.48,0.66,0.85,1.03,1.22,1.4,1.58,1.77,1.95,2.13,2.32,2.32,2.7,3.08,3.46,3.84,4.23,4.61,4.99,5.38,5.76,6.14,6.52,6.77,7.3,7.83,8.37,8.9,9.44,9.97,10.51,11.05,11.58,12.12,12.65,13.16,13.55,13.94,14.32,14.7,15.09,15.47,15.85,16.23,16.62,17,17.38];
+ const svg=$('#cash');const left=56,right=940,top=24,bot=280,N=caja.length,X=m=>left+(m-1)/(N-1)*(right-left),Y=v=>top+(-v)/10*(bot-top);
  const defs=el('defs',{},svg);const gr=el('linearGradient',{id:'cg',x1:0,x2:0,y1:0,y2:1},defs);el('stop',{offset:'0','stop-color':'var(--accent)','stop-opacity':.02},gr);el('stop',{offset:'1','stop-color':'var(--accent)','stop-opacity':.22},gr);
- [0,-10,-20,-30].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
+ [0,-2,-4,-6,-8,-10].forEach(t=>{el('line',{x1:left,x2:right,y1:Y(t),y2:Y(t),stroke:t?'var(--line)':'var(--muted)'},svg);el('text',{x:left-10,y:Y(t)+4,'text-anchor':'end',class:'lab'},svg,t)});
  [1,12,24,36,48,60].forEach(m=>el('text',{x:X(m),y:bot+24,'text-anchor':'middle',class:'lab'},svg,'Mes '+m));
  [['Año 1',6.5],['Año 2',18.5],['Año 3',30.5],['Año 4',42.5],['Año 5',54.5]].forEach(([t,m])=>el('text',{x:X(m),y:top+16,'text-anchor':'middle',class:'lab',style:'fill:var(--muted)'},svg,t));
  [12.5,24.5,36.5,48.5].forEach(m=>el('line',{x1:X(m),x2:X(m),y1:top,y2:bot,stroke:'var(--line)'},svg));
